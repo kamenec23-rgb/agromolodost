@@ -98,7 +98,6 @@
         .corner-card .corner-sub { font-size: 11px; color: #7E57C2; font-weight: 600; }
         .corner-card .corner-stars { color: #E91E63; font-size: 11px; letter-spacing: 0.5px; }
 
-        /* ═══ ПРОФИЛЬ ═══ */
         .profile-card {
             cursor: pointer;
             padding: 6px 14px 6px 6px !important;
@@ -269,7 +268,6 @@
             line-height: 1.4;
         }
 
-        /* ═══ PRELOADER ═══ */
         .preloader {
             position: fixed; inset: 0;
             background: linear-gradient(180deg, #FFF0F5, #F3E5F5);
@@ -661,7 +659,6 @@
         </a>
     </div>
 
-    <!-- ═══ МОДАЛКА ПРОФИЛЯ ═══ -->
     <div class="profile-modal-overlay" id="profileModal">
         <div class="profile-modal">
             <div class="profile-modal-avatar" id="modalAvatar">👤</div>
@@ -685,7 +682,7 @@
             <button class="profile-action-btn secondary" id="profileClose">Закрыть</button>
 
             <div class="profile-note" id="profileNote">
-                Баланс хранится на этом устройстве.
+                Баланс синхронизируется с вашим аккаунтом Telegram.
             </div>
         </div>
     </div>
@@ -976,36 +973,50 @@
             document.querySelector('.holiday-hint').textContent = next.hint;
         })();
 
-        // ═══ ПРОФИЛЬ + БАЛАНС ═══
+        // ═══ ПРОФИЛЬ + БАЛАНС (через Telegram CloudStorage) ═══
         (function () {
             const tg = window.Telegram?.WebApp;
             if (tg) {
                 try { tg.ready(); tg.expand(); } catch (e) {}
             }
 
-            // Данные пользователя из Telegram
             const user = tg?.initDataUnsafe?.user || null;
 
-            // Баланс — пока локальный
-            const STORAGE_KEY = 'balance_value';
-            const LAST_VISIT_KEY = 'balance_last_visit';
-            const DAILY_BONUS = 10;
-
-            let balance = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
-            if (isNaN(balance)) balance = 0;
-
-            const today = new Date().toDateString();
-            const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
-            let earnedToday = 0;
-
-            if (lastVisit !== today) {
-                balance += DAILY_BONUS;
-                earnedToday = DAILY_BONUS;
-                localStorage.setItem(LAST_VISIT_KEY, today);
-                localStorage.setItem(STORAGE_KEY, String(balance));
+            function csGet(key) {
+                return new Promise((resolve) => {
+                    if (!tg?.CloudStorage) {
+                        resolve(localStorage.getItem(key));
+                        return;
+                    }
+                    try {
+                        tg.CloudStorage.getItem(key, (err, val) => {
+                            if (err || val === null || val === undefined) {
+                                resolve(localStorage.getItem(key));
+                            } else {
+                                resolve(val);
+                            }
+                        });
+                    } catch (e) {
+                        resolve(localStorage.getItem(key));
+                    }
+                });
             }
 
-            // Элементы
+            function csSet(key, value) {
+                return new Promise((resolve) => {
+                    try { localStorage.setItem(key, value); } catch (e) {}
+                    if (!tg?.CloudStorage) {
+                        resolve();
+                        return;
+                    }
+                    try {
+                        tg.CloudStorage.setItem(key, String(value), () => resolve());
+                    } catch (e) {
+                        resolve();
+                    }
+                });
+            }
+
             const profileCard = document.getElementById('profileCard');
             const cornerAvatar = document.getElementById('cornerAvatar');
             const cornerName = document.getElementById('cornerName');
@@ -1020,11 +1031,9 @@
             const profileClose = document.getElementById('profileClose');
             const profileNote = document.getElementById('profileNote');
 
-            // Заполняем профиль
             const fullName = user
                 ? [user.first_name, user.last_name].filter(Boolean).join(' ')
                 : 'Гость';
-
             const initial = fullName.trim().charAt(0).toUpperCase() || '👤';
 
             function renderAvatar(container, photoUrl, letter) {
@@ -1043,18 +1052,47 @@
                 }
             }
 
-            // Карточка в углу
             renderAvatar(cornerAvatar, user?.photo_url, initial);
             cornerName.textContent = user ? (user.first_name || fullName) : 'Гость';
 
-            // Модалка
             renderAvatar(modalAvatar, user?.photo_url, initial);
             modalName.textContent = fullName;
             modalUsername.textContent = user?.username ? '@' + user.username : '@—';
             modalId.textContent = user?.id ? 'ID: ' + user.id : 'ID: —';
-            modalBalance.textContent = balance;
+            modalBalance.textContent = '…';
 
-            // Кнопка "Написать в Telegram"
+            const DAILY_BONUS = 10;
+            let currentBalance = 0;
+
+            async function refreshBalance(applyDailyBonus) {
+                let bal = parseInt((await csGet('balance_value')) || '0', 10);
+                if (isNaN(bal)) bal = 0;
+
+                let earned = 0;
+
+                if (applyDailyBonus) {
+                    const today = new Date().toDateString();
+                    const lastVisit = await csGet('balance_last_visit');
+
+                    if (lastVisit !== today) {
+                        bal += DAILY_BONUS;
+                        earned = DAILY_BONUS;
+                        await csSet('balance_last_visit', today);
+                        await csSet('balance_value', String(bal));
+                    }
+                }
+
+                currentBalance = bal;
+                modalBalance.textContent = bal;
+                return earned;
+            }
+
+            refreshBalance(true).then((earned) => {
+                if (earned > 0) {
+                    setTimeout(() => showToast('+' + earned + ' 💎 за ежедневный вход'), 2500);
+                }
+            });
+
             if (user?.username) {
                 btnTelegram.onclick = () => {
                     const url = 'https://t.me/' + user.username;
@@ -1071,16 +1109,16 @@
                 btnTelegram.style.display = 'none';
             }
 
-            // Если открыто не в Telegram — меняем подпись
             if (!user) {
                 profileNote.innerHTML = 'Откройте приложение через Telegram,<br>чтобы подтянуть профиль 🔗';
                 modalUsername.textContent = '@гость';
+                modalBalance.textContent = '0';
             }
 
-            // Открытие/закрытие модалки
-            profileCard.addEventListener('click', () => {
+            profileCard.addEventListener('click', async () => {
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
+                await refreshBalance(false);
                 if (tg?.HapticFeedback) {
                     try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
                 }
@@ -1096,10 +1134,8 @@
                 if (e.target === modal) closeModal();
             });
 
-            // Тост с бонусом
             function showToast(text) {
                 const toast = document.createElement('div');
-                toast.className = 'balance-toast';
                 toast.textContent = text;
                 toast.style.cssText = `
                     position: fixed; bottom: 30px; left: 50%;
@@ -1119,10 +1155,6 @@
                     toast.style.transform = 'translateX(-50%) translateY(120px)';
                     setTimeout(() => toast.remove(), 500);
                 }, 3000);
-            }
-
-            if (earnedToday > 0) {
-                setTimeout(() => showToast('+' + earnedToday + ' 💎 за ежедневный вход'), 2500);
             }
         })();
 
