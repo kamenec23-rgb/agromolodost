@@ -34,7 +34,6 @@
             cursor: none;
         }
 
-        /* ═══ ПЕРЕКЛЮЧАТЕЛЬ ЭФФЕКТА ═══ */
         .toggle-wrap {
             position: fixed;
             top: 20px;
@@ -96,7 +95,6 @@
             transition: color 0.3s;
         }
 
-        /* ═══ УГЛОВЫЕ КАРТОЧКИ ═══ */
         .corner-cards {
             position: fixed;
             top: 20px;
@@ -154,7 +152,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ═══ БАЛАНС ═══ */
         .balance-card {
             cursor: pointer;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 187, 208, 0.55)) !important;
@@ -330,7 +327,6 @@
         }
         .balance-toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* ═══ PRELOADER ═══ */
         .preloader {
             position: fixed;
             inset: 0;
@@ -355,7 +351,6 @@
             to { opacity: 0; visibility: hidden; }
         }
 
-        /* ═══ КУРСОР-ЦВЕТОК ═══ */
         .cursor-flower {
             position: fixed;
             font-size: 32px;
@@ -371,7 +366,6 @@
             transform: translate(-50%, -50%) rotate(15deg) scale(1.3);
         }
 
-        /* ═══ HEADER ═══ */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -437,7 +431,6 @@
             animation: fadeInDown 1s ease-out 0.3s backwards;
         }
 
-        /* ═══ КАРУСЕЛЬ ═══ */
         .carousel {
             width: 100%;
             max-width: 420px;
@@ -512,7 +505,6 @@
             border-radius: 4px;
         }
 
-        /* ═══ СЕЗОННЫЙ СЧЁТЧИК ═══ */
         .season-card {
             display: flex;
             align-items: center;
@@ -562,7 +554,6 @@
             color: #E91E63;
         }
 
-        /* ═══ КАЛЕНДАРЬ ЦВЕТЕНИЯ ═══ */
         .bloom-card {
             width: 100%;
             max-width: 420px;
@@ -646,7 +637,6 @@
             margin-left: 6px;
         }
 
-        /* ═══ ТАЙМЕР ПРАЗДНИКА ═══ */
         .holiday-card {
             width: 100%;
             max-width: 420px;
@@ -714,7 +704,6 @@
             margin-top: 4px;
         }
 
-        /* ═══ СОЦСЕТИ ═══ */
         .social-links {
             display: flex;
             justify-content: center;
@@ -752,7 +741,6 @@
         .social-link.youtube i { color: #FF0000; }
         .social-link.tiktok i { color: #000000; }
 
-        /* ═══ ДОЖДЬ (осень) ═══ */
         .raindrop {
             position: fixed;
             top: -100px;
@@ -778,7 +766,6 @@
             }
         }
 
-        /* ═══ СЕЗОННЫЕ ЧАСТИЦЫ ═══ */
         .season-particle {
             position: fixed;
             top: -60px;
@@ -808,7 +795,6 @@
             }
         }
 
-        /* ═══ МОБИЛЬНАЯ ВЕРСИЯ ═══ */
         @media (max-width: 600px) {
             body {
                 padding-top: 75px;
@@ -991,7 +977,6 @@
         </a>
     </div>
 
-    <!-- Модалка баланса -->
     <div class="balance-modal-overlay" id="balanceModal">
         <div class="balance-modal">
             <div class="balance-modal-header">
@@ -1053,7 +1038,6 @@
     </div>
 
     <script>
-        // ═══ УТИЛИТЫ ═══
         function pluralDays(n) {
             const mod10 = n % 10;
             const mod100 = n % 100;
@@ -1070,7 +1054,6 @@
             return 'winter';
         }
 
-        // ═══ ЭФФЕКТ (дождь осенью, частицы в остальные сезоны) ═══
         const effect = {
             active: false,
             raindropTimers: new Set(),
@@ -1200,7 +1183,6 @@
             }
         };
 
-        // ═══ ПЕРЕКЛЮЧАТЕЛЬ ЭФФЕКТА ═══
         const toggle = document.getElementById('toggleEffect');
 
         let effectEnabled = localStorage.getItem('effectEnabled') !== 'false';
@@ -1229,7 +1211,6 @@
             effect.start();
         }
 
-        // ═══ СЕЗОННЫЙ СЧЁТЧИК ═══
         (function () {
             const seasons = {
                 spring: { name: 'Весна', lower: 'весны', emoji: '🌸', next: 'summer' },
@@ -1267,7 +1248,6 @@
             setInterval(update, 60 * 60 * 1000);
         })();
 
-        // ═══ КАРУСЕЛЬ ═══
         (function () {
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
@@ -1301,7 +1281,6 @@
             }, { passive: true });
         })();
 
-        // ═══ РЕЙТИНГ ═══
         (function () {
             const rating = 4.9;
             const count = 47;
@@ -1309,7 +1288,6 @@
             document.getElementById('ratingCount').textContent = count;
         })();
 
-        // ═══ ПОГОДА ═══
         (function () {
             const LAT = 52.19;
             const LON = 25.15;
@@ -1362,7 +1340,6 @@
                 });
         })();
 
-        // ═══ КАЛЕНДАРЬ ЦВЕТЕНИЯ ═══
         (function () {
             const flowers = [
                 { emoji: '🌷', name: 'Тюльпаны',     months: [2, 3],                        label: 'март–апрель' },
@@ -1390,7 +1367,6 @@
             });
         })();
 
-        // ═══ ТАЙМЕР ПРАЗДНИКА ═══
         (function () {
             const now = new Date();
             const y = now.getFullYear();
@@ -1416,7 +1392,6 @@
             document.querySelector('.holiday-hint').textContent = next.hint;
         })();
 
-        // ═══ БАЛАНС ═══
         (function () {
             const STORAGE_KEY = 'balance_value';
             const LAST_VISIT_KEY = 'balance_last_visit';
@@ -1481,7 +1456,6 @@
             }
         })();
 
-        // ═══ КУРСОР-ЦВЕТОК ═══
         const cursor = document.getElementById('cursor');
 
         document.addEventListener('mousemove', (e) => {
