@@ -40,7 +40,7 @@
             border-radius: 50px;
             box-shadow: 0 4px 16px rgba(156, 39, 176, 0.15);
             font-size: 14px; color: #2D1B4E; font-weight: 600;
-            user-select: none; cursor: pointer;
+            user-select: none;
             transition: background 0.4s, color 0.4s, box-shadow 0.3s;
         }
         .toggle-wrap:hover { box-shadow: 0 6px 22px rgba(156, 39, 176, 0.25); }
@@ -98,7 +98,6 @@
         .corner-card .corner-stars { color: #E91E63; font-size: 11px; letter-spacing: 0.5px; }
 
         .profile-card {
-            cursor: pointer;
             padding: 6px 14px 6px 6px !important;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 187, 208, 0.55)) !important;
             transition: transform 0.2s, box-shadow 0.2s, background 0.4s;
@@ -168,7 +167,6 @@
             background: linear-gradient(135deg, #E91E63, #9C27B0);
             color: #FFFFFF;
             border: none;
-            cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px;
             box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
@@ -336,7 +334,6 @@
             border: none;
             border-radius: 16px;
             font-size: 15px; font-weight: 700;
-            cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
             box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
             font-family: inherit;
@@ -409,7 +406,6 @@
             border: none;
             border-radius: 16px;
             font-size: 15px; font-weight: 700;
-            cursor: pointer;
             font-family: inherit;
             transition: transform 0.2s;
         }
@@ -428,8 +424,10 @@
         @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
         .cursor-flower {
-            position: fixed; font-size: 32px;
-            pointer-events: none; z-index: 10000;
+            position: fixed;
+            font-size: 32px;
+            pointer-events: none;
+            z-index: 999999;
             transform: translate(-50%, -50%) rotate(0deg);
             transition: transform 0.15s ease-out;
             user-select: none;
@@ -526,7 +524,7 @@
             border-radius: 50%;
             background: rgba(156, 39, 176, 0.25);
             transition: all 0.3s;
-            cursor: pointer; border: none; padding: 0;
+            border: none; padding: 0;
         }
         .carousel-dot.active {
             background: linear-gradient(90deg, #E91E63, #9C27B0);
@@ -1032,25 +1030,35 @@
             } catch (e) {}
         }
 
-        // ═══ КУРСОР — активен только на устройствах с мышью ═══
+        // ═══ КУРСОР ═══
         const hasMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const cursor = document.getElementById('cursor');
 
         if (hasMouse) {
             cursor.classList.add('active');
             document.body.style.cursor = 'none';
-            document.querySelectorAll('a, button, .profile-card, .profile-action-btn, .profile-back-btn, .toggle-wrap, .carousel-dot').forEach(el => {
-                el.style.cursor = 'none';
-            });
+
+            const hideCursorSelector = 'a, button, .profile-card, .profile-action-btn, .profile-back-btn, .toggle-wrap, .carousel-dot, .social-link, .qr-modal-close, .stat-card';
+
+            function applyCursorNone() {
+                document.querySelectorAll(hideCursorSelector).forEach(el => {
+                    el.style.cursor = 'none';
+                });
+            }
+            applyCursorNone();
+
+            const observer = new MutationObserver(applyCursorNone);
+            observer.observe(document.body, { childList: true, subtree: true });
 
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
             });
 
-            document.querySelectorAll('a, .profile-card, .profile-action-btn, .profile-back-btn, .toggle-wrap').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            document.addEventListener('mouseover', (e) => {
+                const t = e.target.closest('a, .profile-card, .profile-action-btn, .profile-back-btn, .toggle-wrap, .social-link, .qr-modal-close, .carousel-dot');
+                if (t) cursor.classList.add('hover');
+                else cursor.classList.remove('hover');
             });
         }
 
