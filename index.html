@@ -29,7 +29,6 @@
             transition: background 0.4s, color 0.4s;
         }
 
-        /* ═══ ПЕРЕКЛЮЧАТЕЛЬ ═══ */
         .toggle-wrap {
             position: fixed; top: 20px; left: 20px;
             z-index: 1000;
@@ -67,7 +66,6 @@
         }
         .toggle-wrap.active .toggle-switch::after { transform: translateX(20px); }
 
-        /* ═══ УГЛОВЫЕ КАРТОЧКИ ═══ */
         .corner-cards {
             position: fixed; top: 20px; right: 20px;
             z-index: 1000;
@@ -127,7 +125,7 @@
             transition: color 0.4s;
         }
 
-        /* ═══ REVEAL (анимация при скролле) ═══ */
+        /* ═══ REVEAL ═══ */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -137,109 +135,207 @@
         }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* ═══ МОДАЛКА ПРОФИЛЯ ═══ */
-        .profile-modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(45, 27, 78, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+        /* ═══ СТРАНИЦА ПРОФИЛЯ ═══ */
+        .profile-page {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #FFF0F5 0%, #F3E5F5 100%);
             z-index: 99999;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            transform: translateX(100%);
+            transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+            will-change: transform;
         }
-        .profile-modal-overlay.open { opacity: 1; visibility: visible; }
+        .profile-page.open { transform: translateX(0); }
 
-        .profile-modal {
-            background: linear-gradient(180deg, #FFF8FC, #F8EEFC);
-            border-radius: 28px;
-            padding: 30px 22px 26px;
-            max-width: 380px; width: 100%;
-            max-height: 85vh; overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(45, 27, 78, 0.35);
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s, background 0.4s;
-            text-align: center;
+        .profile-page-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(156, 39, 176, 0.08);
         }
-        .profile-modal-overlay.open .profile-modal { transform: translateY(0) scale(1); }
 
-        .profile-modal-avatar {
-            width: 90px; height: 90px;
+        .profile-back-btn {
+            width: 40px; height: 40px;
             border-radius: 50%;
-            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #E91E63, #9C27B0);
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+        }
+        .profile-back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(233, 30, 99, 0.4);
+        }
+        .profile-back-btn:active { transform: scale(0.94); }
+
+        .profile-page-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #2D1B4E;
+            flex: 1;
+            transition: color 0.4s;
+        }
+
+        .profile-page-body {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 24px 20px 80px;
+        }
+
+        /* Хиро-блок с аватаром */
+        .profile-hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-hero-avatar {
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
             background: linear-gradient(135deg, #E91E63, #9C27B0);
             display: flex; align-items: center; justify-content: center;
-            color: #FFFFFF; font-weight: 800; font-size: 36px;
-            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
+            color: #FFFFFF; font-weight: 800; font-size: 44px;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
             overflow: hidden;
-            border: 4px solid #FFFFFF;
+            border: 5px solid #FFFFFF;
+            position: relative;
         }
-        .profile-modal-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .profile-hero-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .profile-modal-name {
-            font-size: 22px; font-weight: 800;
-            color: #2D1B4E; margin-bottom: 4px;
-            line-height: 1.2;
+        .profile-hero-name {
+            font-size: 26px; font-weight: 800;
+            color: #2D1B4E;
+            margin-bottom: 4px;
+            line-height: 1.15;
             transition: color 0.4s;
         }
-
-        .profile-modal-username {
-            font-size: 14px; font-weight: 600;
-            color: #9C27B0; margin-bottom: 18px;
+        .profile-hero-username {
+            font-size: 15px; font-weight: 600;
+            color: #9C27B0;
+            margin-bottom: 8px;
             transition: color 0.4s;
         }
-
-        .profile-modal-id {
+        .profile-hero-id {
             font-size: 11px;
             color: #7E57C2;
             opacity: 0.6;
-            margin-bottom: 18px;
             font-family: monospace;
             transition: color 0.4s;
         }
 
-        .profile-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(156, 39, 176, 0.2), transparent);
-            margin: 18px 0;
-            transition: background 0.4s;
+        /* Статистика (покупки + баланс) */
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
-        .profile-balance-block {
-            background: linear-gradient(135deg, rgba(233, 30, 99, 0.08), rgba(156, 39, 176, 0.08));
+        .stat-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 18px;
-            transition: background 0.4s;
+            padding: 18px 16px;
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.15);
+            transition: background 0.4s, transform 0.2s;
         }
-        .profile-balance-label {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #7E57C2;
+        .stat-card:hover { transform: translateY(-2px); }
+
+        .stat-card.balance-card-featured {
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.12), rgba(156, 39, 176, 0.12));
+        }
+
+        .stat-icon {
+            font-size: 22px;
             margin-bottom: 8px;
+            display: block;
+        }
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+            color: #2D1B4E;
             transition: color 0.4s;
         }
-        .profile-balance-value {
-            font-size: 38px; font-weight: 800;
+        .stat-card.balance-card-featured .stat-value {
             background: linear-gradient(90deg, #E91E63, #9C27B0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            line-height: 1;
         }
-        .profile-balance-unit {
-            font-size: 12px; font-weight: 600;
-            color: #9C27B0; opacity: 0.7;
-            margin-top: 4px;
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #7E57C2;
             transition: color 0.4s;
         }
 
+        /* Блок покупок */
+        .profile-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #7E57C2;
+            margin-bottom: 10px;
+            margin-left: 4px;
+            display: flex; align-items: center; gap: 6px;
+            transition: color 0.4s;
+        }
+        .profile-section-title i { color: #E91E63; }
+
+        .orders-empty {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.1);
+            transition: background 0.4s;
+        }
+        .orders-empty-emoji {
+            font-size: 44px;
+            margin-bottom: 10px;
+            display: block;
+            filter: drop-shadow(0 4px 12px rgba(233, 30, 99, 0.25));
+        }
+        .orders-empty-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2D1B4E;
+            margin-bottom: 4px;
+            transition: color 0.4s;
+        }
+        .orders-empty-sub {
+            font-size: 12px;
+            color: #7E57C2;
+            opacity: 0.85;
+            transition: color 0.4s;
+        }
+
+        /* Кнопки действий */
         .profile-action-btn {
             width: 100%;
-            padding: 13px;
-            margin-top: 6px;
+            padding: 14px;
+            margin-bottom: 10px;
             background: linear-gradient(90deg, #E91E63, #9C27B0);
             color: #FFFFFF;
             border: none;
@@ -262,30 +358,19 @@
             background: rgba(156, 39, 176, 0.1);
             color: #9C27B0;
             box-shadow: none;
-            margin-top: 8px;
         }
         .profile-action-btn.secondary:hover {
             background: rgba(156, 39, 176, 0.15);
             box-shadow: 0 4px 12px rgba(156, 39, 176, 0.15);
         }
 
-        .profile-note {
-            font-size: 11px;
-            color: #7E57C2;
-            text-align: center;
-            margin-top: 14px;
-            opacity: 0.8;
-            line-height: 1.4;
-            transition: color 0.4s;
-        }
-
-        /* ═══ МОДАЛКА QR ═══ */
+        /* Модалка QR */
         .qr-modal-overlay {
             position: fixed; inset: 0;
             background: rgba(45, 27, 78, 0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            z-index: 100000;
+            z-index: 100001;
             display: flex; align-items: center; justify-content: center;
             padding: 20px;
             opacity: 0; visibility: hidden;
@@ -305,13 +390,11 @@
         .qr-modal-overlay.open .qr-modal { transform: translateY(0) scale(1); }
         .qr-modal-title {
             font-size: 16px; font-weight: 800;
-            color: #2D1B4E;
-            margin-bottom: 6px;
+            color: #2D1B4E; margin-bottom: 6px;
             transition: color 0.4s;
         }
         .qr-modal-sub {
-            font-size: 12px;
-            color: #7E57C2;
+            font-size: 12px; color: #7E57C2;
             margin-bottom: 18px;
             transition: color 0.4s;
         }
@@ -535,7 +618,7 @@
             margin-left: 6px;
         }
 
-        /* ═══ ТАЙМЕР ПРАЗДНИКА ═══ */
+        /* ═══ ПРАЗДНИК ═══ */
         .holiday-card {
             width: 100%; max-width: 420px;
             margin-bottom: 30px;
@@ -668,19 +751,36 @@
         body.tg-dark .bloom-row.now .bloom-name { color: #FF5C8A; }
         body.tg-dark .social-link { background: #2D1B4E; }
         body.tg-dark .social-link.tiktok i { color: #FFFFFF; }
-        body.tg-dark .profile-modal { background: linear-gradient(180deg, #251a35, #1a1226); }
-        body.tg-dark .profile-modal-avatar { border-color: #251a35; }
-        body.tg-dark .profile-modal-name { color: #F5E9FF; }
-        body.tg-dark .profile-modal-username { color: #C77BFF; }
-        body.tg-dark .profile-modal-id { color: #B39DDB; }
-        body.tg-dark .profile-divider {
-            background: linear-gradient(90deg, transparent, rgba(199, 123, 255, 0.3), transparent);
+        body.tg-dark .preloader { background: linear-gradient(180deg, #1a1420, #0f0a16); }
+
+        /* Тёмная тема для страницы профиля */
+        body.tg-dark .profile-page {
+            background: linear-gradient(180deg, #1a1420 0%, #0f0a16 100%);
         }
-        body.tg-dark .profile-balance-block {
+        body.tg-dark .profile-page-header {
+            background: rgba(45, 27, 78, 0.75);
+            border-bottom-color: rgba(199, 123, 255, 0.15);
+        }
+        body.tg-dark .profile-page-title { color: #F5E9FF; }
+        body.tg-dark .profile-hero-avatar { border-color: #251a35; }
+        body.tg-dark .profile-hero-name { color: #F5E9FF; }
+        body.tg-dark .profile-hero-username { color: #C77BFF; }
+        body.tg-dark .profile-hero-id { color: #B39DDB; }
+        body.tg-dark .stat-card {
+            background: rgba(45, 27, 78, 0.75);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        body.tg-dark .stat-card.balance-card-featured {
             background: linear-gradient(135deg, rgba(233, 30, 99, 0.15), rgba(156, 39, 176, 0.15));
         }
-        body.tg-dark .profile-balance-label { color: #B39DDB; }
-        body.tg-dark .profile-balance-unit { color: #C77BFF; }
+        body.tg-dark .stat-value { color: #F5E9FF; }
+        body.tg-dark .stat-label { color: #B39DDB; }
+        body.tg-dark .profile-section-title { color: #B39DDB; }
+        body.tg-dark .orders-empty {
+            background: rgba(45, 27, 78, 0.6);
+        }
+        body.tg-dark .orders-empty-title { color: #F5E9FF; }
+        body.tg-dark .orders-empty-sub { color: #B39DDB; }
         body.tg-dark .profile-action-btn.secondary {
             background: rgba(199, 123, 255, 0.15);
             color: #C77BFF;
@@ -688,8 +788,6 @@
         body.tg-dark .profile-action-btn.secondary:hover {
             background: rgba(199, 123, 255, 0.25);
         }
-        body.tg-dark .profile-note { color: #B39DDB; }
-        body.tg-dark .preloader { background: linear-gradient(180deg, #1a1420, #0f0a16); }
         body.tg-dark .qr-modal { background: #251a35; }
         body.tg-dark .qr-modal-title { color: #F5E9FF; }
         body.tg-dark .qr-modal-sub { color: #B39DDB; }
@@ -717,9 +815,10 @@
             .bloom-season { font-size: 11px; }
             .holiday-emoji { font-size: 36px; }
             .holiday-countdown b { font-size: 20px; }
-            .profile-modal-avatar { width: 80px; height: 80px; font-size: 32px; }
-            .profile-balance-value { font-size: 34px; }
             .qr-modal-image { width: 200px; height: 200px; }
+            .profile-hero-avatar { width: 90px; height: 90px; font-size: 36px; }
+            .profile-hero-name { font-size: 22px; }
+            .stat-value { font-size: 22px; }
         }
     </style>
 </head>
@@ -814,20 +913,47 @@
         </a>
     </div>
 
-    <!-- Модалка профиля -->
-    <div class="profile-modal-overlay" id="profileModal">
-        <div class="profile-modal">
-            <div class="profile-modal-avatar" id="modalAvatar">👤</div>
-            <div class="profile-modal-name" id="modalName">Гость</div>
-            <div class="profile-modal-username" id="modalUsername">@—</div>
-            <div class="profile-modal-id" id="modalId">ID: —</div>
+    <!-- ═══ СТРАНИЦА ПРОФИЛЯ ═══ -->
+    <div class="profile-page" id="profilePage">
+        <div class="profile-page-header">
+            <button class="profile-back-btn" id="profileBack">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="profile-page-title">Профиль</div>
+        </div>
 
-            <div class="profile-divider"></div>
+        <div class="profile-page-body">
+            <div class="profile-hero">
+                <div class="profile-hero-avatar" id="pageAvatar">👤</div>
+                <div class="profile-hero-name" id="pageName">Гость</div>
+                <div class="profile-hero-username" id="pageUsername">@—</div>
+                <div class="profile-hero-id" id="pageId">ID: —</div>
+            </div>
 
-            <div class="profile-balance-block">
-                <div class="profile-balance-label">💎 Ваш баланс</div>
-                <div class="profile-balance-value" id="modalBalance">0</div>
-                <div class="profile-balance-unit">баллов · 100 баллов = 1 BYN</div>
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">🛍️</span>
+                    <div class="stat-value" id="statOrders">0</div>
+                    <div class="stat-label">Покупок</div>
+                </div>
+                <div class="stat-card balance-card-featured">
+                    <span class="stat-icon">💎</span>
+                    <div class="stat-value" id="statBalance">0</div>
+                    <div class="stat-label">Баллов</div>
+                </div>
+            </div>
+
+            <div class="profile-section-title">
+                <i class="fas fa-receipt"></i> История покупок
+            </div>
+            <div class="orders-empty">
+                <span class="orders-empty-emoji">🌸</span>
+                <div class="orders-empty-title">Пока пусто</div>
+                <div class="orders-empty-sub">Здесь появятся ваши заказы</div>
+            </div>
+
+            <div class="profile-section-title">
+                <i class="fas fa-gift"></i> Действия
             </div>
 
             <button class="profile-action-btn" id="btnReferral">
@@ -844,12 +970,6 @@
                 <i class="fab fa-telegram"></i>
                 Написать в Telegram
             </button>
-
-            <button class="profile-action-btn secondary" id="profileClose">Закрыть</button>
-
-            <div class="profile-note" id="profileNote">
-                Баланс синхронизируется с вашим аккаунтом Telegram.
-            </div>
         </div>
     </div>
 
@@ -887,7 +1007,6 @@
             try { tg.ready(); tg.expand(); } catch (e) {}
         }
 
-        // Тёмная тема
         function applyTheme() {
             const isDark = tg?.colorScheme === 'dark';
             document.body.classList.toggle('tg-dark', isDark);
@@ -897,7 +1016,6 @@
             try { tg.onEvent('themeChanged', applyTheme); } catch (e) {}
         }
 
-        // Хэптик-отклик
         function haptic(type = 'light') {
             if (!tg?.HapticFeedback) return;
             try {
@@ -908,7 +1026,6 @@
             } catch (e) {}
         }
 
-        // Звук при получении баллов
         let audioCtx = null;
         function playDing() {
             try {
@@ -1227,9 +1344,7 @@
         // ═══ СОЦСЕТИ ═══
         (function () {
             document.querySelectorAll('.social-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    haptic('medium');
-                });
+                link.addEventListener('click', () => haptic('medium'));
             });
         })();
 
@@ -1264,17 +1379,20 @@
             const cornerAvatar = document.getElementById('cornerAvatar');
             const cornerName = document.getElementById('cornerName');
 
-            const modal = document.getElementById('profileModal');
-            const modalAvatar = document.getElementById('modalAvatar');
-            const modalName = document.getElementById('modalName');
-            const modalUsername = document.getElementById('modalUsername');
-            const modalId = document.getElementById('modalId');
-            const modalBalance = document.getElementById('modalBalance');
+            const profilePage = document.getElementById('profilePage');
+            const profileBack = document.getElementById('profileBack');
+
+            const pageAvatar = document.getElementById('pageAvatar');
+            const pageName = document.getElementById('pageName');
+            const pageUsername = document.getElementById('pageUsername');
+            const pageId = document.getElementById('pageId');
+
+            const statOrders = document.getElementById('statOrders');
+            const statBalance = document.getElementById('statBalance');
+
             const btnReferral = document.getElementById('btnReferral');
             const btnQr = document.getElementById('btnQr');
             const btnTelegram = document.getElementById('btnTelegram');
-            const profileClose = document.getElementById('profileClose');
-            const profileNote = document.getElementById('profileNote');
 
             const qrModal = document.getElementById('qrModal');
             const qrImage = document.getElementById('qrImage');
@@ -1304,16 +1422,15 @@
             renderAvatar(cornerAvatar, user?.photo_url, initial);
             cornerName.textContent = user ? (user.first_name || fullName) : 'Гость';
 
-            renderAvatar(modalAvatar, user?.photo_url, initial);
-            modalName.textContent = fullName;
-            modalUsername.textContent = user?.username ? '@' + user.username : '@—';
-            modalId.textContent = user?.id ? 'ID: ' + user.id : 'ID: —';
-            modalBalance.textContent = '…';
+            renderAvatar(pageAvatar, user?.photo_url, initial);
+            pageName.textContent = fullName;
+            pageUsername.textContent = user?.username ? '@' + user.username : '@—';
+            pageId.textContent = user?.id ? 'ID: ' + user.id : 'ID: —';
 
+            // Баланс и покупки
             const DAILY_BONUS = 10;
-            let currentBalance = 0;
 
-            async function refreshBalance(applyDailyBonus) {
+            async function refreshStats(applyDailyBonus) {
                 let bal = parseInt((await csGet('balance_value')) || '0', 10);
                 if (isNaN(bal)) bal = 0;
 
@@ -1331,12 +1448,17 @@
                     }
                 }
 
-                currentBalance = bal;
-                modalBalance.textContent = bal;
+                statBalance.textContent = bal;
+
+                // Покупок пока 0 (пока нет системы заказов)
+                let orders = parseInt((await csGet('orders_count')) || '0', 10);
+                if (isNaN(orders)) orders = 0;
+                statOrders.textContent = orders;
+
                 return earned;
             }
 
-            refreshBalance(true).then((earned) => {
+            refreshStats(true).then((earned) => {
                 if (earned > 0) {
                     setTimeout(() => {
                         showToast('+' + earned + ' 💎 за ежедневный вход');
@@ -1346,31 +1468,27 @@
                 }
             });
 
-            // Реферальная ссылка
-            if (btnReferral) {
-                if (user?.id) {
-                    btnReferral.onclick = () => {
-                        haptic('medium');
-                        const refLink = `https://t.me/${BOT_USERNAME}?start=ref_${user.id}`;
-                        const shareText = 'Загляни в наш магазин цветов 🌷';
-                        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
-                        if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
-                        else window.open(shareUrl, '_blank');
-                    };
-                } else {
-                    btnReferral.style.display = 'none';
-                }
+            // Реферал
+            if (user?.id) {
+                btnReferral.onclick = () => {
+                    haptic('medium');
+                    const refLink = `https://t.me/${BOT_USERNAME}?start=ref_${user.id}`;
+                    const shareText = 'Загляни в наш магазин цветов 🌷';
+                    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
+                    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+                    else window.open(shareUrl, '_blank');
+                };
+            } else {
+                btnReferral.style.display = 'none';
             }
 
-            // QR-код магазина
-            if (btnQr) {
-                btnQr.onclick = () => {
-                    haptic('medium');
-                    const botLink = `https://t.me/${BOT_USERNAME}`;
-                    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=${encodeURIComponent(botLink)}`;
-                    qrModal.classList.add('open');
-                };
-            }
+            // QR
+            btnQr.onclick = () => {
+                haptic('medium');
+                const botLink = `https://t.me/${BOT_USERNAME}`;
+                qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=${encodeURIComponent(botLink)}`;
+                qrModal.classList.add('open');
+            };
             qrClose.onclick = () => {
                 haptic('light');
                 qrModal.classList.remove('open');
@@ -1398,30 +1516,32 @@
                 btnTelegram.style.display = 'none';
             }
 
-            if (!user) {
-                profileNote.innerHTML = 'Откройте приложение через Telegram,<br>чтобы подтянуть профиль 🔗';
-                modalUsername.textContent = '@гость';
-                modalBalance.textContent = '0';
-            }
-
+            // Открытие страницы профиля
             profileCard.addEventListener('click', async () => {
                 haptic('medium');
-                modal.classList.add('open');
+                profilePage.classList.add('open');
+                // Блокируем скролл основной страницы
                 document.body.style.overflow = 'hidden';
-                await refreshBalance(false);
+                await refreshStats(false);
+                if (tg?.BackButton) {
+                    try {
+                        tg.BackButton.show();
+                        tg.BackButton.onClick(closeProfilePage);
+                    } catch (e) {}
+                }
             });
 
-            function closeModal() {
-                modal.classList.remove('open');
+            function closeProfilePage() {
+                profilePage.classList.remove('open');
                 document.body.style.overflow = '';
+                if (tg?.BackButton) {
+                    try { tg.BackButton.hide(); } catch (e) {}
+                }
             }
 
-            profileClose.addEventListener('click', () => {
+            profileBack.addEventListener('click', () => {
                 haptic('light');
-                closeModal();
-            });
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
+                closeProfilePage();
             });
 
             function showToast(text) {
@@ -1435,7 +1555,7 @@
                     color: #FFFFFF; font-weight: 700; font-size: 14px;
                     border-radius: 50px;
                     box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
-                    z-index: 99998;
+                    z-index: 999998;
                     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
                     pointer-events: none; white-space: nowrap;
                 `;
@@ -1454,9 +1574,9 @@
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-        document.querySelectorAll('a, .profile-card').forEach(link => {
-            link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        document.querySelectorAll('a, .profile-card, .profile-action-btn, .profile-back-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
     </script>
 </body>
