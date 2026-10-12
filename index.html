@@ -5,18 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Агромолодость</title>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            overflow-x: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -36,270 +30,237 @@
 
         .toggle-wrap {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 20px; left: 20px;
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
             padding: 10px 16px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50px;
             box-shadow: 0 4px 16px rgba(156, 39, 176, 0.15);
-            font-size: 14px;
-            color: #2D1B4E;
-            font-weight: 600;
-            user-select: none;
-            cursor: pointer;
+            font-size: 14px; color: #2D1B4E; font-weight: 600;
+            user-select: none; cursor: pointer;
             transition: box-shadow 0.3s;
         }
-
-        .toggle-wrap:hover {
-            box-shadow: 0 6px 22px rgba(156, 39, 176, 0.25);
-        }
+        .toggle-wrap:hover { box-shadow: 0 6px 22px rgba(156, 39, 176, 0.25); }
 
         .toggle-switch {
             position: relative;
-            width: 44px;
-            height: 24px;
+            width: 44px; height: 24px;
             background: #E1BEE7;
             border-radius: 12px;
             transition: background 0.3s;
             flex-shrink: 0;
         }
-
         .toggle-switch::after {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 18px;
-            height: 18px;
-            background: #FFFFFF;
-            border-radius: 50%;
+            top: 3px; left: 3px;
+            width: 18px; height: 18px;
+            background: #FFFFFF; border-radius: 50%;
             transition: transform 0.3s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-
         .toggle-wrap.active .toggle-switch {
             background: linear-gradient(90deg, #E91E63, #9C27B0);
         }
-
-        .toggle-wrap.active .toggle-switch::after {
-            transform: translateX(20px);
-        }
-
-        .toggle-label {
-            transition: color 0.3s;
-        }
+        .toggle-wrap.active .toggle-switch::after { transform: translateX(20px); }
 
         .corner-cards {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 20px; right: 20px;
             z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: flex-end;
+            display: flex; flex-direction: column;
+            gap: 8px; align-items: flex-end;
         }
 
         .corner-card {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            display: flex; align-items: center; gap: 8px;
             padding: 8px 14px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50px;
             box-shadow: 0 4px 16px rgba(156, 39, 176, 0.15);
-            font-size: 14px;
-            color: #2D1B4E;
-            font-weight: 700;
-            user-select: none;
+            font-size: 14px; color: #2D1B4E;
+            font-weight: 700; user-select: none;
             white-space: nowrap;
             animation: fadeInDown 0.7s ease-out 0.3s backwards;
         }
 
         .corner-card .corner-emoji {
-            font-size: 18px;
-            line-height: 1;
+            font-size: 18px; line-height: 1;
             filter: drop-shadow(0 1px 3px rgba(233, 30, 99, 0.25));
         }
+        .corner-card .corner-value { color: #9C27B0; font-weight: 800; }
+        .corner-card .corner-value small { font-size: 11px; color: #E91E63; }
+        .corner-card .corner-sub { font-size: 11px; color: #7E57C2; font-weight: 600; }
+        .corner-card .corner-stars { color: #E91E63; font-size: 11px; letter-spacing: 0.5px; }
 
-        .corner-card .corner-value {
-            color: #9C27B0;
-            font-weight: 800;
-        }
-
-        .corner-card .corner-value small {
-            font-size: 11px;
-            color: #E91E63;
-        }
-
-        .corner-card .corner-sub {
-            font-size: 11px;
-            color: #7E57C2;
-            font-weight: 600;
-        }
-
-        .corner-card .corner-stars {
-            color: #E91E63;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
-
-        .balance-card {
+        /* ═══ ПРОФИЛЬ ═══ */
+        .profile-card {
             cursor: pointer;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 187, 208, 0.55)) !important;
+            padding: 6px 14px 6px 6px !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 187, 208, 0.55)) !important;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .balance-card:hover {
+        .profile-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(233, 30, 99, 0.3);
         }
-        .balance-card .corner-value {
-            color: #E91E63 !important;
+        .profile-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #E91E63, #9C27B0);
+            display: flex; align-items: center; justify-content: center;
+            color: #FFFFFF; font-weight: 800; font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.35);
+            overflow: hidden;
+        }
+        .profile-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+        }
+        .profile-name {
+            color: #2D1B4E; font-weight: 700; font-size: 13px;
+            max-width: 90px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
-        .balance-modal-overlay {
-            position: fixed;
-            inset: 0;
+        .profile-modal-overlay {
+            position: fixed; inset: 0;
             background: rgba(45, 27, 78, 0.5);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             padding: 20px;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-        .balance-modal-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
+        .profile-modal-overlay.open { opacity: 1; visibility: visible; }
 
-        .balance-modal {
+        .profile-modal {
             background: linear-gradient(180deg, #FFF8FC, #F8EEFC);
             border-radius: 28px;
-            padding: 26px 22px;
-            max-width: 380px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
+            padding: 30px 22px 26px;
+            max-width: 380px; width: 100%;
+            max-height: 85vh; overflow-y: auto;
             box-shadow: 0 20px 60px rgba(45, 27, 78, 0.35);
             transform: translateY(20px) scale(0.95);
             transition: transform 0.3s;
+            text-align: center;
         }
-        .balance-modal-overlay.open .balance-modal {
+        .profile-modal-overlay.open .profile-modal {
             transform: translateY(0) scale(1);
         }
 
-        .balance-modal-header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed rgba(156, 39, 176, 0.2);
-            margin-bottom: 20px;
+        .profile-modal-avatar {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #E91E63, #9C27B0);
+            display: flex; align-items: center; justify-content: center;
+            color: #FFFFFF; font-weight: 800; font-size: 36px;
+            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
+            overflow: hidden;
+            border: 4px solid #FFFFFF;
+            position: relative;
+        }
+        .profile-modal-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
         }
 
-        .balance-modal-title {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .profile-modal-name {
+            font-size: 22px; font-weight: 800;
+            color: #2D1B4E; margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .profile-modal-username {
+            font-size: 14px; font-weight: 600;
+            color: #9C27B0; margin-bottom: 18px;
+        }
+
+        .profile-modal-id {
+            font-size: 11px;
             color: #7E57C2;
-            margin-bottom: 12px;
+            opacity: 0.6;
+            margin-bottom: 18px;
+            font-family: monospace;
         }
 
-        .balance-modal-amount {
-            font-size: 52px;
-            font-weight: 800;
+        .profile-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(156, 39, 176, 0.2), transparent);
+            margin: 18px 0;
+        }
+
+        .profile-balance-block {
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.08), rgba(156, 39, 176, 0.08));
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .profile-balance-label {
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #7E57C2;
+            margin-bottom: 8px;
+        }
+        .profile-balance-value {
+            font-size: 38px; font-weight: 800;
             background: linear-gradient(90deg, #E91E63, #9C27B0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1;
-            margin-bottom: 6px;
+        }
+        .profile-balance-unit {
+            font-size: 12px; font-weight: 600;
+            color: #9C27B0; opacity: 0.7;
+            margin-top: 4px;
         }
 
-        .balance-modal-unit {
-            font-size: 12px;
-            font-weight: 600;
-            color: #9C27B0;
-            opacity: 0.7;
-        }
-
-        .balance-section {
-            margin-bottom: 20px;
-        }
-
-        .balance-section-title {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #7E57C2;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .balance-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 12px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            margin-bottom: 6px;
-        }
-
-        .balance-row .b-emoji { font-size: 18px; flex-shrink: 0; }
-
-        .balance-row .b-text {
-            flex: 1;
-            color: #2D1B4E;
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .balance-row .b-points {
-            font-weight: 800;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-        .balance-row .b-points.plus { color: #4CAF50; }
-        .balance-row .b-points.minus { color: #E91E63; }
-
-        .balance-modal-close {
+        .profile-action-btn {
             width: 100%;
             padding: 13px;
-            margin-top: 8px;
+            margin-top: 6px;
             background: linear-gradient(90deg, #E91E63, #9C27B0);
             color: #FFFFFF;
             border: none;
             border-radius: 16px;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 15px; font-weight: 700;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
             font-family: inherit;
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px;
         }
-        .balance-modal-close:hover {
+        .profile-action-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
         }
-        .balance-modal-close:active { transform: scale(0.98); }
+        .profile-action-btn:active { transform: scale(0.98); }
 
-        .balance-note {
+        .profile-action-btn.secondary {
+            background: rgba(156, 39, 176, 0.1);
+            color: #9C27B0;
+            box-shadow: none;
+            margin-top: 8px;
+        }
+        .profile-action-btn.secondary:hover {
+            background: rgba(156, 39, 176, 0.15);
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.15);
+        }
+
+        .profile-note {
             font-size: 11px;
             color: #7E57C2;
             text-align: center;
@@ -308,487 +269,275 @@
             line-height: 1.4;
         }
 
-        .balance-toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(120px);
-            padding: 12px 22px;
-            background: linear-gradient(90deg, #E91E63, #9C27B0);
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
-            z-index: 99998;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        .balance-toast.show { transform: translateX(-50%) translateY(0); }
-
+        /* ═══ PRELOADER ═══ */
         .preloader {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: linear-gradient(180deg, #FFF0F5, #F3E5F5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             z-index: 9999;
             animation: fadeOut 0.8s ease-out 1.5s forwards;
         }
-
-        .preloader-icon {
-            font-size: 70px;
-            animation: spin 1.5s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
-        }
+        .preloader-icon { font-size: 70px; animation: spin 1.5s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
         .cursor-flower {
-            position: fixed;
-            font-size: 32px;
-            pointer-events: none;
-            z-index: 10000;
+            position: fixed; font-size: 32px;
+            pointer-events: none; z-index: 10000;
             transform: translate(-50%, -50%) rotate(0deg);
             transition: transform 0.15s ease-out;
             user-select: none;
             filter: drop-shadow(0 2px 6px rgba(233, 30, 99, 0.4));
         }
-
         .cursor-flower.hover {
             transform: translate(-50%, -50%) rotate(15deg) scale(1.3);
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            z-index: 2;
-            position: relative;
+            text-align: center; margin-bottom: 30px;
+            z-index: 2; position: relative;
         }
-
         .header h1::before {
-            content: '';
-            position: absolute;
-            width: 450px;
-            height: 450px;
+            content: ''; position: absolute;
+            width: 450px; height: 450px;
             background: radial-gradient(circle, rgba(233, 30, 99, 0.28) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: -1;
-            filter: blur(50px);
+            z-index: -1; filter: blur(50px);
             pointer-events: none;
         }
-
         .header h1 {
-            font-size: 48px;
-            margin-bottom: 12px;
+            font-size: 48px; margin-bottom: 12px;
             font-weight: 800;
             filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.25));
             animation: fadeInDown 1s ease-out;
         }
-
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
         .gradient-text {
             background: linear-gradient(90deg, #9C27B0 0%, #F8BBD0 100%);
-            -webkit-background-clip: text;
+            -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
         .header h1 .flower {
             display: inline-block;
             animation: pulse 2s ease-in-out infinite;
         }
-
         @keyframes pulse {
             0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.15) rotate(-10deg); }
+            50%      { transform: scale(1.15) rotate(-10deg); }
         }
-
         .header p {
-            color: #7E57C2;
-            font-size: 16px;
-            font-weight: 500;
+            color: #7E57C2; font-size: 16px; font-weight: 500;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
             animation: fadeInDown 1s ease-out 0.3s backwards;
         }
 
         .carousel {
-            width: 100%;
-            max-width: 420px;
+            width: 100%; max-width: 420px;
             margin-bottom: 24px;
-            z-index: 2;
-            position: relative;
+            z-index: 2; position: relative;
             animation: fadeInDown 1s ease-out 0.45s backwards;
         }
-
         .carousel-track {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            scrollbar-width: none; -ms-overflow-style: none;
             border-radius: 24px;
             -webkit-overflow-scrolling: touch;
             box-shadow: 0 8px 28px rgba(156, 39, 176, 0.2);
         }
-
-        .carousel-track::-webkit-scrollbar {
-            display: none;
-        }
-
+        .carousel-track::-webkit-scrollbar { display: none; }
         .carousel-slide {
             flex: 0 0 100%;
             scroll-snap-align: center;
-            height: 220px;
-            overflow: hidden;
+            height: 220px; overflow: hidden;
             border-radius: 24px;
         }
-
         .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
             pointer-events: none;
         }
-
         .carousel-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
             font-size: 80px;
             background: linear-gradient(135deg, var(--g1), var(--g2));
         }
-
         .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
+            display: flex; justify-content: center;
+            gap: 8px; margin-top: 14px;
         }
-
         .carousel-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background: rgba(156, 39, 176, 0.25);
             transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            padding: 0;
+            cursor: pointer; border: none; padding: 0;
         }
-
         .carousel-dot.active {
             background: linear-gradient(90deg, #E91E63, #9C27B0);
-            width: 24px;
-            border-radius: 4px;
+            width: 24px; border-radius: 4px;
         }
 
         .season-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            display: flex; align-items: center; gap: 16px;
             padding: 14px 22px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             box-shadow: 0 6px 20px rgba(156, 39, 176, 0.15);
             margin-bottom: 20px;
-            z-index: 2;
-            position: relative;
+            z-index: 2; position: relative;
             animation: fadeInDown 1s ease-out 0.5s backwards;
         }
-
         .season-emoji {
-            font-size: 40px;
-            line-height: 1;
+            font-size: 40px; line-height: 1;
             filter: drop-shadow(0 2px 6px rgba(233, 30, 99, 0.35));
             animation: pulse 3s ease-in-out infinite;
         }
-
-        .season-text {
-            text-align: left;
-        }
-
+        .season-text { text-align: left; }
         .season-title {
-            font-size: 12px;
-            color: #7E57C2;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 4px;
+            font-size: 12px; color: #7E57C2;
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.6px; margin-bottom: 4px;
         }
-
-        .season-title span {
-            color: #9C27B0;
-        }
-
+        .season-title span { color: #9C27B0; }
         .season-countdown {
-            font-size: 15px;
-            color: #2D1B4E;
-            font-weight: 700;
+            font-size: 15px; color: #2D1B4E; font-weight: 700;
         }
-
-        .season-countdown span {
-            color: #E91E63;
-        }
+        .season-countdown span { color: #E91E63; }
 
         .bloom-card {
-            width: 100%;
-            max-width: 420px;
+            width: 100%; max-width: 420px;
             margin-bottom: 20px;
             padding: 18px 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             box-shadow: 0 6px 20px rgba(156, 39, 176, 0.15);
-            z-index: 2;
-            position: relative;
+            z-index: 2; position: relative;
             animation: fadeInDown 1s ease-out 0.55s backwards;
         }
-
         .bloom-title {
-            font-size: 12px;
-            color: #7E57C2;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
+            font-size: 12px; color: #7E57C2; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.6px;
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 6px;
         }
-
-        .bloom-title i {
-            color: #E91E63;
-        }
-
-        .bloom-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
+        .bloom-title i { color: #E91E63; }
+        .bloom-list { display: flex; flex-direction: column; gap: 8px; }
         .bloom-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 8px;
-            border-radius: 12px;
+            display: flex; align-items: center; gap: 10px;
+            padding: 6px 8px; border-radius: 12px;
             transition: background 0.3s;
         }
-
         .bloom-row.now {
             background: linear-gradient(90deg, rgba(233, 30, 99, 0.12), rgba(156, 39, 176, 0.12));
         }
-
-        .bloom-emoji {
-            font-size: 20px;
-            width: 28px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .bloom-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #2D1B4E;
-            flex: 1;
-        }
-
-        .bloom-season {
-            font-size: 12px;
-            color: #7E57C2;
-            font-weight: 600;
-        }
-
-        .bloom-row.now .bloom-name {
-            color: #E91E63;
-        }
-
+        .bloom-emoji { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+        .bloom-name { font-size: 14px; font-weight: 700; color: #2D1B4E; flex: 1; }
+        .bloom-season { font-size: 12px; color: #7E57C2; font-weight: 600; }
+        .bloom-row.now .bloom-name { color: #E91E63; }
         .bloom-badge {
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 10px; font-weight: 700;
             color: #FFFFFF;
             background: linear-gradient(90deg, #E91E63, #9C27B0);
-            padding: 2px 8px;
-            border-radius: 8px;
+            padding: 2px 8px; border-radius: 8px;
             margin-left: 6px;
         }
 
         .holiday-card {
-            width: 100%;
-            max-width: 420px;
+            width: 100%; max-width: 420px;
             margin-bottom: 30px;
             padding: 18px 22px;
             background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(233, 30, 99, 0.35);
-            z-index: 2;
-            position: relative;
+            z-index: 2; position: relative;
             animation: fadeInDown 1s ease-out 0.6s backwards;
             color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            display: flex; align-items: center; gap: 16px;
             overflow: hidden;
         }
-
         .holiday-card::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
+            content: ''; position: absolute;
+            width: 200px; height: 200px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 70%);
-            top: -50px;
-            right: -50px;
+            top: -50px; right: -50px;
             pointer-events: none;
         }
-
         .holiday-emoji {
-            font-size: 42px;
-            line-height: 1;
-            flex-shrink: 0;
+            font-size: 42px; line-height: 1; flex-shrink: 0;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
             animation: pulse 2.5s ease-in-out infinite;
         }
-
-        .holiday-text {
-            flex: 1;
-        }
-
+        .holiday-text { flex: 1; }
         .holiday-title {
-            font-size: 13px;
-            font-weight: 700;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 4px;
+            font-size: 13px; font-weight: 700;
+            opacity: 0.9; text-transform: uppercase;
+            letter-spacing: 0.6px; margin-bottom: 4px;
         }
-
-        .holiday-countdown {
-            font-size: 15px;
-            font-weight: 600;
-            opacity: 0.95;
-        }
-
-        .holiday-countdown b {
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .holiday-hint {
-            font-size: 12px;
-            opacity: 0.85;
-            margin-top: 4px;
-        }
+        .holiday-countdown { font-size: 15px; font-weight: 600; opacity: 0.95; }
+        .holiday-countdown b { font-size: 22px; font-weight: 800; }
+        .holiday-hint { font-size: 12px; opacity: 0.85; margin-top: 4px; }
 
         .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            z-index: 2;
-            position: relative;
+            display: flex; justify-content: center;
+            gap: 20px; margin-top: 10px;
+            z-index: 2; position: relative;
             animation: fadeInDown 1s ease-out 0.65s backwards;
         }
-
         .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: #FFFFFF;
-            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            width: 60px; height: 60px;
+            background: #FFFFFF; border-radius: 50%;
             box-shadow: 0 4px 12px rgba(156, 39, 176, 0.15);
             transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            font-size: 28px;
+            text-decoration: none; font-size: 28px;
         }
-
         .social-link:hover {
             transform: translateY(-5px) scale(1.08);
             box-shadow: 0 10px 25px rgba(233, 30, 99, 0.3);
         }
-
-        .social-link:active {
-            transform: scale(0.95);
-        }
-
+        .social-link:active { transform: scale(0.95); }
         .social-link.instagram i { color: #E91E63; }
-        .social-link.youtube i { color: #FF0000; }
-        .social-link.tiktok i { color: #000000; }
+        .social-link.youtube i   { color: #FF0000; }
+        .social-link.tiktok i    { color: #000000; }
 
         .raindrop {
-            position: fixed;
-            top: -100px;
-            width: 2px;
-            pointer-events: none;
+            position: fixed; top: -100px;
+            width: 2px; pointer-events: none;
             z-index: 1;
             animation: rainfall linear infinite;
             background: linear-gradient(180deg, transparent 0%, rgba(120, 150, 200, 0.6) 40%, rgba(80, 120, 180, 0.9) 100%);
             border-radius: 2px;
         }
-
         @keyframes rainfall {
-            0% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            5% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh);
-                opacity: 0.4;
-            }
+            0%   { transform: translateY(-100px); opacity: 0; }
+            5%   { opacity: 1; }
+            100% { transform: translateY(110vh); opacity: 0.4; }
         }
 
         .season-particle {
-            position: fixed;
-            top: -60px;
-            pointer-events: none;
-            z-index: 1;
-            user-select: none;
-            line-height: 1;
+            position: fixed; top: -60px;
+            pointer-events: none; z-index: 1;
+            user-select: none; line-height: 1;
             will-change: transform, opacity;
             animation: particleFall linear forwards;
             filter: drop-shadow(0 2px 4px rgba(156, 39, 176, 0.18));
         }
-
         @keyframes particleFall {
             0% {
                 transform: translateY(0) translateX(0) rotate(var(--rot-start, 0deg));
                 opacity: 0;
             }
-            10% {
-                opacity: var(--opacity, 0.85);
-            }
-            85% {
-                opacity: var(--opacity, 0.85);
-            }
+            10% { opacity: var(--opacity, 0.85); }
+            85% { opacity: var(--opacity, 0.85); }
             100% {
                 transform: translateY(110vh) translateX(var(--drift, 0px)) rotate(var(--rot-end, 180deg));
                 opacity: 0;
@@ -796,92 +545,28 @@
         }
 
         @media (max-width: 600px) {
-            body {
-                padding-top: 75px;
-            }
-
-            .header h1 {
-                font-size: 34px;
-            }
-
-            .header h1::before {
-                width: 300px;
-                height: 300px;
-            }
-
-            .social-link {
-                width: 54px;
-                height: 54px;
-                font-size: 24px;
-            }
-
-            .cursor-flower {
-                display: none;
-            }
-
-            .toggle-wrap {
-                padding: 8px 12px;
-                font-size: 12px;
-                top: 12px;
-                left: 12px;
-            }
-
-            .toggle-label {
-                display: none;
-            }
-
-            .corner-cards {
-                top: 12px;
-                right: 12px;
-                gap: 6px;
-            }
-
-            .corner-card {
-                padding: 6px 10px;
-                font-size: 12px;
-                gap: 6px;
-            }
-
-            .corner-card .corner-emoji {
-                font-size: 15px;
-            }
-
-            .corner-card .corner-sub,
-            .corner-card .corner-stars {
-                display: none;
-            }
-
-            .carousel-slide {
-                height: 190px;
-            }
-
-            .season-emoji {
-                font-size: 34px;
-            }
-
-            .season-countdown {
-                font-size: 14px;
-            }
-
-            .bloom-name {
-                font-size: 13px;
-            }
-
-            .bloom-season {
-                font-size: 11px;
-            }
-
-            .holiday-emoji {
-                font-size: 36px;
-            }
-
-            .holiday-countdown b {
-                font-size: 20px;
-            }
-
-            .balance-modal-amount {
-                font-size: 44px;
-            }
+            body { padding-top: 75px; }
+            .header h1 { font-size: 34px; }
+            .header h1::before { width: 300px; height: 300px; }
+            .social-link { width: 54px; height: 54px; font-size: 24px; }
+            .cursor-flower { display: none; }
+            .toggle-wrap { padding: 8px 12px; font-size: 12px; top: 12px; left: 12px; }
+            .toggle-label { display: none; }
+            .corner-cards { top: 12px; right: 12px; gap: 6px; }
+            .corner-card { padding: 6px 10px; font-size: 12px; gap: 6px; }
+            .corner-card .corner-emoji { font-size: 15px; }
+            .corner-card .corner-sub, .corner-card .corner-stars { display: none; }
+            .profile-name { display: none; }
+            .profile-card { padding: 4px !important; }
+            .carousel-slide { height: 190px; }
+            .season-emoji { font-size: 34px; }
+            .season-countdown { font-size: 14px; }
+            .bloom-name { font-size: 13px; }
+            .bloom-season { font-size: 11px; }
+            .holiday-emoji { font-size: 36px; }
+            .holiday-countdown b { font-size: 20px; }
+            .profile-modal-avatar { width: 80px; height: 80px; font-size: 32px; }
+            .profile-balance-value { font-size: 34px; }
         }
     </style>
 </head>
@@ -904,10 +589,9 @@
             <span class="corner-stars">★★★★★</span>
             <span class="corner-sub"><span id="ratingCount">47</span>&nbsp;отз.</span>
         </div>
-        <div class="corner-card balance-card" id="balanceCard" title="Ваш баланс">
-            <span class="corner-emoji">💎</span>
-            <span class="corner-value" id="balanceValue">0</span>
-            <span class="corner-sub">баланс</span>
+        <div class="corner-card profile-card" id="profileCard" title="Профиль">
+            <div class="profile-avatar" id="cornerAvatar">👤</div>
+            <span class="profile-name" id="cornerName">Гость</span>
         </div>
     </div>
 
@@ -977,62 +661,31 @@
         </a>
     </div>
 
-    <div class="balance-modal-overlay" id="balanceModal">
-        <div class="balance-modal">
-            <div class="balance-modal-header">
-                <div class="balance-modal-title">💎 Ваш баланс</div>
-                <div class="balance-modal-amount" id="modalBalance">0</div>
-                <div class="balance-modal-unit">баллов · 100 баллов = 1 BYN</div>
+    <!-- ═══ МОДАЛКА ПРОФИЛЯ ═══ -->
+    <div class="profile-modal-overlay" id="profileModal">
+        <div class="profile-modal">
+            <div class="profile-modal-avatar" id="modalAvatar">👤</div>
+            <div class="profile-modal-name" id="modalName">Гость</div>
+            <div class="profile-modal-username" id="modalUsername">@—</div>
+            <div class="profile-modal-id" id="modalId">ID: —</div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-balance-block">
+                <div class="profile-balance-label">💎 Ваш баланс</div>
+                <div class="profile-balance-value" id="modalBalance">0</div>
+                <div class="profile-balance-unit">баллов · 100 баллов = 1 BYN</div>
             </div>
 
-            <div class="balance-section">
-                <div class="balance-section-title">💰 Как заработать</div>
-                <div class="balance-row">
-                    <span class="b-emoji">📅</span>
-                    <span class="b-text">Ежедневный вход</span>
-                    <span class="b-points plus">+10</span>
-                </div>
-                <div class="balance-row">
-                    <span class="b-emoji">✍️</span>
-                    <span class="b-text">Отзыв о заказе</span>
-                    <span class="b-points plus">+50</span>
-                </div>
-                <div class="balance-row">
-                    <span class="b-emoji">📸</span>
-                    <span class="b-text">Фото с букетом</span>
-                    <span class="b-points plus">+30</span>
-                </div>
-                <div class="balance-row">
-                    <span class="b-emoji">👥</span>
-                    <span class="b-text">Пригласить друга</span>
-                    <span class="b-points plus">+100</span>
-                </div>
-            </div>
+            <button class="profile-action-btn" id="btnTelegram">
+                <i class="fab fa-telegram"></i>
+                Написать в Telegram
+            </button>
 
-            <div class="balance-section">
-                <div class="balance-section-title">🎁 Как потратить</div>
-                <div class="balance-row">
-                    <span class="b-emoji">🌷</span>
-                    <span class="b-text">Скидка 5%</span>
-                    <span class="b-points minus">−500</span>
-                </div>
-                <div class="balance-row">
-                    <span class="b-emoji">🚚</span>
-                    <span class="b-text">Бесплатная доставка</span>
-                    <span class="b-points minus">−300</span>
-                </div>
-                <div class="balance-row">
-                    <span class="b-emoji">💐</span>
-                    <span class="b-text">Бонусный цветок</span>
-                    <span class="b-points minus">−200</span>
-                </div>
-            </div>
+            <button class="profile-action-btn secondary" id="profileClose">Закрыть</button>
 
-            <button class="balance-modal-close" id="balanceClose">Закрыть</button>
-
-            <div class="balance-note">
-                Баланс хранится на этом устройстве.<br>
-                Скоро синхронизируется с ботом 🔗
+            <div class="profile-note" id="profileNote">
+                Баланс хранится на этом устройстве.
             </div>
         </div>
     </div>
@@ -1065,53 +718,42 @@
                     sizeRange: [16, 26],
                     durationRange: [6, 11],
                     driftRange: [-40, 40],
-                    spin: 320,
-                    opacity: 0.9
+                    spin: 320, opacity: 0.9
                 },
                 summer: {
                     emojis: ['🦋', '🐝', '🌻'],
                     sizeRange: [18, 28],
                     durationRange: [7, 12],
                     driftRange: [-80, 80],
-                    spin: 180,
-                    opacity: 0.85
+                    spin: 180, opacity: 0.85
                 },
                 winter: {
                     emojis: ['❄️', '🌨️', '⛄'],
                     sizeRange: [14, 24],
                     durationRange: [7, 13],
                     driftRange: [-30, 30],
-                    spin: 220,
-                    opacity: 0.95
+                    spin: 220, opacity: 0.95
                 }
             },
 
             createRaindrop() {
                 if (!this.active) return;
-
                 const drop = document.createElement('div');
                 drop.className = 'raindrop';
-
-                const height = Math.random() * 25 + 15;
-                drop.style.height = height + 'px';
+                drop.style.height = (Math.random() * 25 + 15) + 'px';
                 drop.style.width = (Math.random() * 1 + 1) + 'px';
                 drop.style.left = Math.random() * 100 + '%';
-
                 const duration = Math.random() * 1 + 0.8;
                 drop.style.animationDuration = duration + 's';
-
                 const delay = Math.random() * 2;
                 drop.style.animationDelay = delay + 's';
                 drop.style.opacity = Math.random() * 0.5 + 0.3;
-
                 document.body.appendChild(drop);
-
                 const timerId = setTimeout(() => {
                     this.raindropTimers.delete(timerId);
                     drop.remove();
                     if (this.active) this.createRaindrop();
                 }, (duration + delay) * 1000);
-
                 this.raindropTimers.add(timerId);
             },
 
@@ -1119,83 +761,53 @@
                 if (!this.active) return;
                 const cfg = this.particleConfigs[getSeason()];
                 if (!cfg) return;
-
                 const el = document.createElement('div');
                 el.className = 'season-particle';
                 el.textContent = cfg.emojis[Math.floor(Math.random() * cfg.emojis.length)];
-
-                const size = cfg.sizeRange[0] + Math.random() * (cfg.sizeRange[1] - cfg.sizeRange[0]);
-                el.style.fontSize = size + 'px';
-
+                el.style.fontSize = (cfg.sizeRange[0] + Math.random() * (cfg.sizeRange[1] - cfg.sizeRange[0])) + 'px';
                 el.style.left = Math.random() * 100 + '%';
-
                 const duration = cfg.durationRange[0] + Math.random() * (cfg.durationRange[1] - cfg.durationRange[0]);
                 el.style.animationDuration = duration + 's';
-
                 const delay = Math.random() * 3;
                 el.style.animationDelay = delay + 's';
-
                 el.style.setProperty('--rot-start', (Math.random() * 360) + 'deg');
-                el.style.setProperty('--rot-end',
-                    (Math.random() * cfg.spin * (Math.random() > 0.5 ? 1 : -1)) + 'deg');
-
-                const drift = cfg.driftRange[0] + Math.random() * (cfg.driftRange[1] - cfg.driftRange[0]);
-                el.style.setProperty('--drift', drift + 'px');
+                el.style.setProperty('--rot-end', (Math.random() * cfg.spin * (Math.random() > 0.5 ? 1 : -1)) + 'deg');
+                el.style.setProperty('--drift', (cfg.driftRange[0] + Math.random() * (cfg.driftRange[1] - cfg.driftRange[0])) + 'px');
                 el.style.setProperty('--opacity', cfg.opacity);
-
                 document.body.appendChild(el);
-
-                const totalMs = (duration + delay) * 1000;
                 const timerId = setTimeout(() => {
                     this.particleTimers.delete(timerId);
                     el.remove();
                     if (this.active) this.createParticle();
-                }, totalMs);
+                }, (duration + delay) * 1000);
                 this.particleTimers.add(timerId);
             },
 
             start() {
                 if (this.active) return;
                 this.active = true;
-
-                const season = getSeason();
-
-                if (season === 'autumn') {
-                    for (let i = 0; i < 50; i++) {
-                        this.createRaindrop();
-                    }
+                if (getSeason() === 'autumn') {
+                    for (let i = 0; i < 50; i++) this.createRaindrop();
                 } else {
-                    for (let i = 0; i < 25; i++) {
-                        this.createParticle();
-                    }
+                    for (let i = 0; i < 25; i++) this.createParticle();
                 }
             },
 
             stop() {
                 this.active = false;
-
-                this.raindropTimers.forEach(clearTimeout);
-                this.raindropTimers.clear();
-                this.particleTimers.forEach(clearTimeout);
-                this.particleTimers.clear();
-
+                this.raindropTimers.forEach(clearTimeout); this.raindropTimers.clear();
+                this.particleTimers.forEach(clearTimeout); this.particleTimers.clear();
                 document.querySelectorAll('.raindrop, .season-particle').forEach(el => el.remove());
             }
         };
 
         const toggle = document.getElementById('toggleEffect');
-
         let effectEnabled = localStorage.getItem('effectEnabled') !== 'false';
-
-        if (effectEnabled) {
-            toggle.classList.add('active');
-        } else {
-            toggle.classList.remove('active');
-        }
+        if (effectEnabled) toggle.classList.add('active');
+        else toggle.classList.remove('active');
 
         toggle.addEventListener('click', () => {
             effectEnabled = !effectEnabled;
-
             if (effectEnabled) {
                 toggle.classList.add('active');
                 localStorage.setItem('effectEnabled', 'true');
@@ -1207,9 +819,7 @@
             }
         });
 
-        if (effectEnabled) {
-            effect.start();
-        }
+        if (effectEnabled) effect.start();
 
         (function () {
             const seasons = {
@@ -1218,32 +828,26 @@
                 autumn: { name: 'Осень', lower: 'осени', emoji: '🍂', next: 'winter' },
                 winter: { name: 'Зима', lower: 'зимы', emoji: '❄️', next: 'spring' }
             };
-
             function nextSeasonStart(d) {
-                const y = d.getFullYear();
-                const m = d.getMonth();
+                const y = d.getFullYear(); const m = d.getMonth();
                 if (m >= 2 && m <= 4) return new Date(y, 5, 1);
                 if (m >= 5 && m <= 7) return new Date(y, 8, 1);
                 if (m >= 8 && m <= 10) return new Date(y, 11, 1);
                 if (m === 11) return new Date(y + 1, 2, 1);
                 return new Date(y, 2, 1);
             }
-
             function update() {
                 const now = new Date();
                 const key = getSeason();
-                const s = seasons[key];
-                const nextS = seasons[s.next];
+                const s = seasons[key]; const nextS = seasons[s.next];
                 const target = nextSeasonStart(now);
                 const days = Math.max(0, Math.ceil((target - now) / 86400000));
-
                 document.getElementById('seasonEmoji').textContent = s.emoji;
                 document.getElementById('seasonName').textContent = s.name;
                 document.getElementById('nextSeasonName').textContent = nextS.lower;
                 document.getElementById('seasonDays').textContent = days;
                 document.getElementById('seasonDaysWord').textContent = pluralDays(days);
             }
-
             update();
             setInterval(update, 60 * 60 * 1000);
         })();
@@ -1252,11 +856,9 @@
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
             if (!track || !dotsContainer) return;
-
             const slides = track.querySelectorAll('.carousel-slide');
             const count = slides.length;
             if (count === 0) return;
-
             for (let i = 0; i < count; i++) {
                 const dot = document.createElement('button');
                 dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
@@ -1266,9 +868,7 @@
                 });
                 dotsContainer.appendChild(dot);
             }
-
             const dots = dotsContainer.querySelectorAll('.carousel-dot');
-
             let rafPending = false;
             track.addEventListener('scroll', () => {
                 if (rafPending) return;
@@ -1282,16 +882,13 @@
         })();
 
         (function () {
-            const rating = 4.9;
-            const count = 47;
+            const rating = 4.9; const count = 47;
             document.getElementById('ratingValue').textContent = rating.toFixed(1);
             document.getElementById('ratingCount').textContent = count;
         })();
 
         (function () {
-            const LAT = 52.19;
-            const LON = 25.15;
-
+            const LAT = 52.19; const LON = 25.15;
             const emojiByCode = (code) => {
                 if (code === 0) return '☀️';
                 if (code <= 2) return '🌤️';
@@ -1305,7 +902,6 @@
                 if (code >= 95) return '⛈️';
                 return '🌡️';
             };
-
             const descByCode = (code) => {
                 if (code === 0) return 'Ясно';
                 if (code === 1) return 'Малооблачно';
@@ -1321,23 +917,18 @@
                 if (code >= 95) return 'Гроза';
                 return 'Погода';
             };
-
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&timezone=Europe/Minsk`;
-
-            fetch(url)
-                .then(r => r.json())
-                .then(data => {
-                    const t = Math.round(data.current.temperature_2m);
-                    const code = data.current.weather_code;
-                    document.getElementById('weatherEmoji').textContent = emojiByCode(code);
-                    document.getElementById('weatherTemp').innerHTML = t + '<small>°C</small>';
-                    document.getElementById('weatherDesc').textContent = descByCode(code);
-                })
-                .catch(() => {
-                    document.getElementById('weatherEmoji').textContent = '🌡️';
-                    document.getElementById('weatherTemp').innerHTML = '—<small>°C</small>';
-                    document.getElementById('weatherDesc').textContent = '—';
-                });
+            fetch(url).then(r => r.json()).then(data => {
+                const t = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                document.getElementById('weatherEmoji').textContent = emojiByCode(code);
+                document.getElementById('weatherTemp').innerHTML = t + '<small>°C</small>';
+                document.getElementById('weatherDesc').textContent = descByCode(code);
+            }).catch(() => {
+                document.getElementById('weatherEmoji').textContent = '🌡️';
+                document.getElementById('weatherTemp').innerHTML = '—<small>°C</small>';
+                document.getElementById('weatherDesc').textContent = '—';
+            });
         })();
 
         (function () {
@@ -1350,10 +941,8 @@
                 { emoji: '🏵️', name: 'Хризантемы',   months: [8, 9, 10],                    label: 'сентябрь–ноябрь' },
                 { emoji: '💐', name: 'Эустомы',      months: [0,1,2,3,4,5,6,7,8,9,10,11],   label: 'круглый год' }
             ];
-
             const nowMonth = new Date().getMonth();
             const list = document.getElementById('bloomList');
-
             flowers.forEach(f => {
                 const isNow = f.months.includes(nowMonth);
                 const row = document.createElement('div');
@@ -1368,9 +957,7 @@
         })();
 
         (function () {
-            const now = new Date();
-            const y = now.getFullYear();
-
+            const now = new Date(); const y = now.getFullYear();
             const candidates = [];
             for (const yr of [y, y + 1]) {
                 const feb14 = new Date(yr, 1, 14);
@@ -1378,13 +965,10 @@
                 if (feb14 > now) candidates.push({ date: feb14, name: '14 Февраля', emoji: '💝', hint: 'День всех влюблённых ❤️' });
                 if (mar8 > now) candidates.push({ date: mar8, name: '8 Марта', emoji: '🌷', hint: 'Успей оформить предзаказ 💐' });
             }
-
             candidates.sort((a, b) => a.date - b.date);
             const next = candidates[0];
             if (!next) return;
-
             const days = Math.ceil((next.date - now) / 86400000);
-
             document.getElementById('holidayEmoji').textContent = next.emoji;
             document.getElementById('holidayTitle').textContent = 'Скоро ' + next.name;
             document.getElementById('holidayDays').textContent = days;
@@ -1392,7 +976,17 @@
             document.querySelector('.holiday-hint').textContent = next.hint;
         })();
 
+        // ═══ ПРОФИЛЬ + БАЛАНС ═══
         (function () {
+            const tg = window.Telegram?.WebApp;
+            if (tg) {
+                try { tg.ready(); tg.expand(); } catch (e) {}
+            }
+
+            // Данные пользователя из Telegram
+            const user = tg?.initDataUnsafe?.user || null;
+
+            // Баланс — пока локальный
             const STORAGE_KEY = 'balance_value';
             const LAST_VISIT_KEY = 'balance_last_visit';
             const DAILY_BONUS = 10;
@@ -1411,21 +1005,85 @@
                 localStorage.setItem(STORAGE_KEY, String(balance));
             }
 
-            const balanceEl = document.getElementById('balanceValue');
-            const modalBalanceEl = document.getElementById('modalBalance');
-            const balanceCard = document.getElementById('balanceCard');
-            const modal = document.getElementById('balanceModal');
-            const closeBtn = document.getElementById('balanceClose');
+            // Элементы
+            const profileCard = document.getElementById('profileCard');
+            const cornerAvatar = document.getElementById('cornerAvatar');
+            const cornerName = document.getElementById('cornerName');
 
-            function render() {
-                balanceEl.textContent = balance;
-                modalBalanceEl.textContent = balance;
+            const modal = document.getElementById('profileModal');
+            const modalAvatar = document.getElementById('modalAvatar');
+            const modalName = document.getElementById('modalName');
+            const modalUsername = document.getElementById('modalUsername');
+            const modalId = document.getElementById('modalId');
+            const modalBalance = document.getElementById('modalBalance');
+            const btnTelegram = document.getElementById('btnTelegram');
+            const profileClose = document.getElementById('profileClose');
+            const profileNote = document.getElementById('profileNote');
+
+            // Заполняем профиль
+            const fullName = user
+                ? [user.first_name, user.last_name].filter(Boolean).join(' ')
+                : 'Гость';
+
+            const initial = fullName.trim().charAt(0).toUpperCase() || '👤';
+
+            function renderAvatar(container, photoUrl, letter) {
+                if (photoUrl) {
+                    container.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = photoUrl;
+                    img.alt = fullName;
+                    img.onerror = () => {
+                        container.innerHTML = '';
+                        container.textContent = letter;
+                    };
+                    container.appendChild(img);
+                } else {
+                    container.textContent = letter;
+                }
             }
-            render();
 
-            balanceCard.addEventListener('click', () => {
+            // Карточка в углу
+            renderAvatar(cornerAvatar, user?.photo_url, initial);
+            cornerName.textContent = user ? (user.first_name || fullName) : 'Гость';
+
+            // Модалка
+            renderAvatar(modalAvatar, user?.photo_url, initial);
+            modalName.textContent = fullName;
+            modalUsername.textContent = user?.username ? '@' + user.username : '@—';
+            modalId.textContent = user?.id ? 'ID: ' + user.id : 'ID: —';
+            modalBalance.textContent = balance;
+
+            // Кнопка "Написать в Telegram"
+            if (user?.username) {
+                btnTelegram.onclick = () => {
+                    const url = 'https://t.me/' + user.username;
+                    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+                    else window.open(url, '_blank');
+                };
+            } else if (user?.id) {
+                btnTelegram.onclick = () => {
+                    const url = 'tg://user?id=' + user.id;
+                    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+                    else window.open(url, '_blank');
+                };
+            } else {
+                btnTelegram.style.display = 'none';
+            }
+
+            // Если открыто не в Telegram — меняем подпись
+            if (!user) {
+                profileNote.innerHTML = 'Откройте приложение через Telegram,<br>чтобы подтянуть профиль 🔗';
+                modalUsername.textContent = '@гость';
+            }
+
+            // Открытие/закрытие модалки
+            profileCard.addEventListener('click', () => {
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
+                if (tg?.HapticFeedback) {
+                    try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
+                }
             });
 
             function closeModal() {
@@ -1433,20 +1091,32 @@
                 document.body.style.overflow = '';
             }
 
-            closeBtn.addEventListener('click', closeModal);
-
+            profileClose.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) closeModal();
             });
 
+            // Тост с бонусом
             function showToast(text) {
                 const toast = document.createElement('div');
                 toast.className = 'balance-toast';
                 toast.textContent = text;
+                toast.style.cssText = `
+                    position: fixed; bottom: 30px; left: 50%;
+                    transform: translateX(-50%) translateY(120px);
+                    padding: 12px 22px;
+                    background: linear-gradient(90deg, #E91E63, #9C27B0);
+                    color: #FFFFFF; font-weight: 700; font-size: 14px;
+                    border-radius: 50px;
+                    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
+                    z-index: 99998;
+                    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    pointer-events: none; white-space: nowrap;
+                `;
                 document.body.appendChild(toast);
-                requestAnimationFrame(() => toast.classList.add('show'));
+                requestAnimationFrame(() => toast.style.transform = 'translateX(-50%) translateY(0)');
                 setTimeout(() => {
-                    toast.classList.remove('show');
+                    toast.style.transform = 'translateX(-50%) translateY(120px)';
                     setTimeout(() => toast.remove(), 500);
                 }, 3000);
             }
@@ -1457,13 +1127,11 @@
         })();
 
         const cursor = document.getElementById('cursor');
-
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-
-        document.querySelectorAll('a, .balance-card').forEach(link => {
+        document.querySelectorAll('a, .profile-card').forEach(link => {
             link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
