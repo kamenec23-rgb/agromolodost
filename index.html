@@ -96,7 +96,7 @@
             transition: color 0.3s;
         }
 
-        /* ═══ УГЛОВЫЕ КАРТОЧКИ (погода + рейтинг) ═══ */
+        /* ═══ УГЛОВЫЕ КАРТОЧКИ ═══ */
         .corner-cards {
             position: fixed;
             top: 20px;
@@ -153,6 +153,182 @@
             font-size: 11px;
             letter-spacing: 0.5px;
         }
+
+        /* ═══ БАЛАНС ═══ */
+        .balance-card {
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 187, 208, 0.55)) !important;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .balance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.3);
+        }
+        .balance-card .corner-value {
+            color: #E91E63 !important;
+        }
+
+        .balance-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 27, 78, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .balance-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .balance-modal {
+            background: linear-gradient(180deg, #FFF8FC, #F8EEFC);
+            border-radius: 28px;
+            padding: 26px 22px;
+            max-width: 380px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(45, 27, 78, 0.35);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s;
+        }
+        .balance-modal-overlay.open .balance-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .balance-modal-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(156, 39, 176, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .balance-modal-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7E57C2;
+            margin-bottom: 12px;
+        }
+
+        .balance-modal-amount {
+            font-size: 52px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #E91E63, #9C27B0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .balance-modal-unit {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9C27B0;
+            opacity: 0.7;
+        }
+
+        .balance-section {
+            margin-bottom: 20px;
+        }
+
+        .balance-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #7E57C2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .balance-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            margin-bottom: 6px;
+        }
+
+        .balance-row .b-emoji { font-size: 18px; flex-shrink: 0; }
+
+        .balance-row .b-text {
+            flex: 1;
+            color: #2D1B4E;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .balance-row .b-points {
+            font-weight: 800;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .balance-row .b-points.plus { color: #4CAF50; }
+        .balance-row .b-points.minus { color: #E91E63; }
+
+        .balance-modal-close {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            background: linear-gradient(90deg, #E91E63, #9C27B0);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
+            font-family: inherit;
+        }
+        .balance-modal-close:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
+        }
+        .balance-modal-close:active { transform: scale(0.98); }
+
+        .balance-note {
+            font-size: 11px;
+            color: #7E57C2;
+            text-align: center;
+            margin-top: 14px;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .balance-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            padding: 12px 22px;
+            background: linear-gradient(90deg, #E91E63, #9C27B0);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
+            z-index: 99998;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .balance-toast.show { transform: translateX(-50%) translateY(0); }
 
         /* ═══ PRELOADER ═══ */
         .preloader {
@@ -576,7 +752,7 @@
         .social-link.youtube i { color: #FF0000; }
         .social-link.tiktok i { color: #000000; }
 
-        /* ═══ ДОЖДЬ ═══ */
+        /* ═══ ДОЖДЬ (осень) ═══ */
         .raindrop {
             position: fixed;
             top: -100px;
@@ -599,6 +775,36 @@
             100% {
                 transform: translateY(110vh);
                 opacity: 0.4;
+            }
+        }
+
+        /* ═══ СЕЗОННЫЕ ЧАСТИЦЫ ═══ */
+        .season-particle {
+            position: fixed;
+            top: -60px;
+            pointer-events: none;
+            z-index: 1;
+            user-select: none;
+            line-height: 1;
+            will-change: transform, opacity;
+            animation: particleFall linear forwards;
+            filter: drop-shadow(0 2px 4px rgba(156, 39, 176, 0.18));
+        }
+
+        @keyframes particleFall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(var(--rot-start, 0deg));
+                opacity: 0;
+            }
+            10% {
+                opacity: var(--opacity, 0.85);
+            }
+            85% {
+                opacity: var(--opacity, 0.85);
+            }
+            100% {
+                transform: translateY(110vh) translateX(var(--drift, 0px)) rotate(var(--rot-end, 180deg));
+                opacity: 0;
             }
         }
 
@@ -686,18 +892,20 @@
             .holiday-countdown b {
                 font-size: 20px;
             }
+
+            .balance-modal-amount {
+                font-size: 44px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Переключатель эффекта -->
     <div class="toggle-wrap active" id="toggleEffect">
         <span class="toggle-label">Сезонный эффект</span>
         <div class="toggle-switch"></div>
     </div>
 
-    <!-- Погода + Рейтинг в правом верхнем углу -->
     <div class="corner-cards">
         <div class="corner-card" title="Погода на ферме">
             <span class="corner-emoji" id="weatherEmoji">⏳</span>
@@ -710,23 +918,24 @@
             <span class="corner-stars">★★★★★</span>
             <span class="corner-sub"><span id="ratingCount">47</span>&nbsp;отз.</span>
         </div>
+        <div class="corner-card balance-card" id="balanceCard" title="Ваш баланс">
+            <span class="corner-emoji">💎</span>
+            <span class="corner-value" id="balanceValue">0</span>
+            <span class="corner-sub">баланс</span>
+        </div>
     </div>
 
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-icon">🌷</div>
     </div>
 
-    <!-- Курсор-цветок -->
     <div class="cursor-flower" id="cursor">🌸</div>
 
-    <!-- Контент -->
     <div class="header">
         <h1><span class="flower">🌷</span> <span class="gradient-text">Агромолодость</span></h1>
         <p>Семейная ферма из Дрогичинского района</p>
     </div>
 
-    <!-- Карусель фото (ПЕРЕД сезоном) -->
     <div class="carousel">
         <div class="carousel-track" id="carouselTrack">
             <div class="carousel-slide">
@@ -748,7 +957,6 @@
         <div class="carousel-dots" id="carouselDots"></div>
     </div>
 
-    <!-- Счётчик сезона -->
     <div class="season-card">
         <div class="season-emoji" id="seasonEmoji">🌸</div>
         <div class="season-text">
@@ -757,13 +965,11 @@
         </div>
     </div>
 
-    <!-- Календарь цветения -->
     <div class="bloom-card">
         <div class="bloom-title"><i class="fas fa-seedling"></i> Календарь цветения</div>
         <div class="bloom-list" id="bloomList"></div>
     </div>
 
-    <!-- Таймер праздника -->
     <div class="holiday-card" id="holidayCard">
         <div class="holiday-emoji" id="holidayEmoji">🌷</div>
         <div class="holiday-text">
@@ -773,7 +979,6 @@
         </div>
     </div>
 
-    <!-- Соцсети -->
     <div class="social-links">
         <a href="https://www.instagram.com/agromolodost" target="_blank" class="social-link instagram">
             <i class="fab fa-instagram"></i>
@@ -786,7 +991,215 @@
         </a>
     </div>
 
+    <!-- Модалка баланса -->
+    <div class="balance-modal-overlay" id="balanceModal">
+        <div class="balance-modal">
+            <div class="balance-modal-header">
+                <div class="balance-modal-title">💎 Ваш баланс</div>
+                <div class="balance-modal-amount" id="modalBalance">0</div>
+                <div class="balance-modal-unit">баллов · 100 баллов = 1 BYN</div>
+            </div>
+
+            <div class="balance-section">
+                <div class="balance-section-title">💰 Как заработать</div>
+                <div class="balance-row">
+                    <span class="b-emoji">📅</span>
+                    <span class="b-text">Ежедневный вход</span>
+                    <span class="b-points plus">+10</span>
+                </div>
+                <div class="balance-row">
+                    <span class="b-emoji">✍️</span>
+                    <span class="b-text">Отзыв о заказе</span>
+                    <span class="b-points plus">+50</span>
+                </div>
+                <div class="balance-row">
+                    <span class="b-emoji">📸</span>
+                    <span class="b-text">Фото с букетом</span>
+                    <span class="b-points plus">+30</span>
+                </div>
+                <div class="balance-row">
+                    <span class="b-emoji">👥</span>
+                    <span class="b-text">Пригласить друга</span>
+                    <span class="b-points plus">+100</span>
+                </div>
+            </div>
+
+            <div class="balance-section">
+                <div class="balance-section-title">🎁 Как потратить</div>
+                <div class="balance-row">
+                    <span class="b-emoji">🌷</span>
+                    <span class="b-text">Скидка 5%</span>
+                    <span class="b-points minus">−500</span>
+                </div>
+                <div class="balance-row">
+                    <span class="b-emoji">🚚</span>
+                    <span class="b-text">Бесплатная доставка</span>
+                    <span class="b-points minus">−300</span>
+                </div>
+                <div class="balance-row">
+                    <span class="b-emoji">💐</span>
+                    <span class="b-text">Бонусный цветок</span>
+                    <span class="b-points minus">−200</span>
+                </div>
+            </div>
+
+            <button class="balance-modal-close" id="balanceClose">Закрыть</button>
+
+            <div class="balance-note">
+                Баланс хранится на этом устройстве.<br>
+                Скоро синхронизируется с ботом 🔗
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ═══ УТИЛИТЫ ═══
+        function pluralDays(n) {
+            const mod10 = n % 10;
+            const mod100 = n % 100;
+            if (mod10 === 1 && mod100 !== 11) return 'день';
+            if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'дня';
+            return 'дней';
+        }
+
+        function getSeason() {
+            const m = new Date().getMonth();
+            if (m >= 2 && m <= 4) return 'spring';
+            if (m >= 5 && m <= 7) return 'summer';
+            if (m >= 8 && m <= 10) return 'autumn';
+            return 'winter';
+        }
+
+        // ═══ ЭФФЕКТ (дождь осенью, частицы в остальные сезоны) ═══
+        const effect = {
+            active: false,
+            raindropTimers: new Set(),
+            particleTimers: new Set(),
+
+            particleConfigs: {
+                spring: {
+                    emojis: ['🌸', '🌷', '🌺'],
+                    sizeRange: [16, 26],
+                    durationRange: [6, 11],
+                    driftRange: [-40, 40],
+                    spin: 320,
+                    opacity: 0.9
+                },
+                summer: {
+                    emojis: ['🦋', '🐝', '🌻'],
+                    sizeRange: [18, 28],
+                    durationRange: [7, 12],
+                    driftRange: [-80, 80],
+                    spin: 180,
+                    opacity: 0.85
+                },
+                winter: {
+                    emojis: ['❄️', '🌨️', '⛄'],
+                    sizeRange: [14, 24],
+                    durationRange: [7, 13],
+                    driftRange: [-30, 30],
+                    spin: 220,
+                    opacity: 0.95
+                }
+            },
+
+            createRaindrop() {
+                if (!this.active) return;
+
+                const drop = document.createElement('div');
+                drop.className = 'raindrop';
+
+                const height = Math.random() * 25 + 15;
+                drop.style.height = height + 'px';
+                drop.style.width = (Math.random() * 1 + 1) + 'px';
+                drop.style.left = Math.random() * 100 + '%';
+
+                const duration = Math.random() * 1 + 0.8;
+                drop.style.animationDuration = duration + 's';
+
+                const delay = Math.random() * 2;
+                drop.style.animationDelay = delay + 's';
+                drop.style.opacity = Math.random() * 0.5 + 0.3;
+
+                document.body.appendChild(drop);
+
+                const timerId = setTimeout(() => {
+                    this.raindropTimers.delete(timerId);
+                    drop.remove();
+                    if (this.active) this.createRaindrop();
+                }, (duration + delay) * 1000);
+
+                this.raindropTimers.add(timerId);
+            },
+
+            createParticle() {
+                if (!this.active) return;
+                const cfg = this.particleConfigs[getSeason()];
+                if (!cfg) return;
+
+                const el = document.createElement('div');
+                el.className = 'season-particle';
+                el.textContent = cfg.emojis[Math.floor(Math.random() * cfg.emojis.length)];
+
+                const size = cfg.sizeRange[0] + Math.random() * (cfg.sizeRange[1] - cfg.sizeRange[0]);
+                el.style.fontSize = size + 'px';
+
+                el.style.left = Math.random() * 100 + '%';
+
+                const duration = cfg.durationRange[0] + Math.random() * (cfg.durationRange[1] - cfg.durationRange[0]);
+                el.style.animationDuration = duration + 's';
+
+                const delay = Math.random() * 3;
+                el.style.animationDelay = delay + 's';
+
+                el.style.setProperty('--rot-start', (Math.random() * 360) + 'deg');
+                el.style.setProperty('--rot-end',
+                    (Math.random() * cfg.spin * (Math.random() > 0.5 ? 1 : -1)) + 'deg');
+
+                const drift = cfg.driftRange[0] + Math.random() * (cfg.driftRange[1] - cfg.driftRange[0]);
+                el.style.setProperty('--drift', drift + 'px');
+                el.style.setProperty('--opacity', cfg.opacity);
+
+                document.body.appendChild(el);
+
+                const totalMs = (duration + delay) * 1000;
+                const timerId = setTimeout(() => {
+                    this.particleTimers.delete(timerId);
+                    el.remove();
+                    if (this.active) this.createParticle();
+                }, totalMs);
+                this.particleTimers.add(timerId);
+            },
+
+            start() {
+                if (this.active) return;
+                this.active = true;
+
+                const season = getSeason();
+
+                if (season === 'autumn') {
+                    for (let i = 0; i < 50; i++) {
+                        this.createRaindrop();
+                    }
+                } else {
+                    for (let i = 0; i < 25; i++) {
+                        this.createParticle();
+                    }
+                }
+            },
+
+            stop() {
+                this.active = false;
+
+                this.raindropTimers.forEach(clearTimeout);
+                this.raindropTimers.clear();
+                this.particleTimers.forEach(clearTimeout);
+                this.particleTimers.clear();
+
+                document.querySelectorAll('.raindrop, .season-particle').forEach(el => el.remove());
+            }
+        };
+
         // ═══ ПЕРЕКЛЮЧАТЕЛЬ ЭФФЕКТА ═══
         const toggle = document.getElementById('toggleEffect');
 
@@ -804,76 +1217,16 @@
             if (effectEnabled) {
                 toggle.classList.add('active');
                 localStorage.setItem('effectEnabled', 'true');
-                startRain();
+                effect.start();
             } else {
                 toggle.classList.remove('active');
                 localStorage.setItem('effectEnabled', 'false');
-                stopRain();
+                effect.stop();
             }
         });
 
-        // ═══ ДОЖДЬ ═══
-        let rainActive = false;
-        const rainTimers = new Set();
-
-        function createRaindrop() {
-            if (!rainActive) return;
-
-            const drop = document.createElement('div');
-            drop.className = 'raindrop';
-
-            const height = Math.random() * 25 + 15;
-            drop.style.height = height + 'px';
-
-            const width = Math.random() * 1 + 1;
-            drop.style.width = width + 'px';
-
-            drop.style.left = Math.random() * 100 + '%';
-
-            const duration = Math.random() * 1 + 0.8;
-            drop.style.animationDuration = duration + 's';
-
-            const delay = Math.random() * 2;
-            drop.style.animationDelay = delay + 's';
-            drop.style.opacity = Math.random() * 0.5 + 0.3;
-
-            document.body.appendChild(drop);
-
-            const timerId = setTimeout(() => {
-                rainTimers.delete(timerId);
-                drop.remove();
-                if (rainActive) createRaindrop();
-            }, (duration + delay) * 1000);
-
-            rainTimers.add(timerId);
-        }
-
-        function startRain() {
-            if (rainActive) return;
-            rainActive = true;
-            for (let i = 0; i < 50; i++) {
-                createRaindrop();
-            }
-        }
-
-        function stopRain() {
-            rainActive = false;
-            rainTimers.forEach(clearTimeout);
-            rainTimers.clear();
-            document.querySelectorAll('.raindrop').forEach(drop => drop.remove());
-        }
-
         if (effectEnabled) {
-            startRain();
-        }
-
-        // ═══ УТИЛИТЫ ═══
-        function pluralDays(n) {
-            const mod10 = n % 10;
-            const mod100 = n % 100;
-            if (mod10 === 1 && mod100 !== 11) return 'день';
-            if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'дня';
-            return 'дней';
+            effect.start();
         }
 
         // ═══ СЕЗОННЫЙ СЧЁТЧИК ═══
@@ -884,14 +1237,6 @@
                 autumn: { name: 'Осень', lower: 'осени', emoji: '🍂', next: 'winter' },
                 winter: { name: 'Зима', lower: 'зимы', emoji: '❄️', next: 'spring' }
             };
-
-            function getSeasonKey(d) {
-                const m = d.getMonth();
-                if (m >= 2 && m <= 4) return 'spring';
-                if (m >= 5 && m <= 7) return 'summer';
-                if (m >= 8 && m <= 10) return 'autumn';
-                return 'winter';
-            }
 
             function nextSeasonStart(d) {
                 const y = d.getFullYear();
@@ -905,7 +1250,7 @@
 
             function update() {
                 const now = new Date();
-                const key = getSeasonKey(now);
+                const key = getSeason();
                 const s = seasons[key];
                 const nextS = seasons[s.next];
                 const target = nextSeasonStart(now);
@@ -956,16 +1301,15 @@
             }, { passive: true });
         })();
 
-        // ═══ ПУНКТ 6: РЕЙТИНГ ═══
+        // ═══ РЕЙТИНГ ═══
         (function () {
-            const rating = 4.9;      // ← средний балл
-            const count = 47;        // ← количество отзывов
-
+            const rating = 4.9;
+            const count = 47;
             document.getElementById('ratingValue').textContent = rating.toFixed(1);
             document.getElementById('ratingCount').textContent = count;
         })();
 
-        // ═══ ПУНКТ 11: ПОГОДА ═══
+        // ═══ ПОГОДА ═══
         (function () {
             const LAT = 52.19;
             const LON = 25.15;
@@ -1018,7 +1362,7 @@
                 });
         })();
 
-        // ═══ ПУНКТ 13: КАЛЕНДАРЬ ЦВЕТЕНИЯ ═══
+        // ═══ КАЛЕНДАРЬ ЦВЕТЕНИЯ ═══
         (function () {
             const flowers = [
                 { emoji: '🌷', name: 'Тюльпаны',     months: [2, 3],                        label: 'март–апрель' },
@@ -1046,7 +1390,7 @@
             });
         })();
 
-        // ═══ ПУНКТ 17: ТАЙМЕР ПРАЗДНИКА ═══
+        // ═══ ТАЙМЕР ПРАЗДНИКА ═══
         (function () {
             const now = new Date();
             const y = now.getFullYear();
@@ -1072,6 +1416,71 @@
             document.querySelector('.holiday-hint').textContent = next.hint;
         })();
 
+        // ═══ БАЛАНС ═══
+        (function () {
+            const STORAGE_KEY = 'balance_value';
+            const LAST_VISIT_KEY = 'balance_last_visit';
+            const DAILY_BONUS = 10;
+
+            let balance = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+            if (isNaN(balance)) balance = 0;
+
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
+            let earnedToday = 0;
+
+            if (lastVisit !== today) {
+                balance += DAILY_BONUS;
+                earnedToday = DAILY_BONUS;
+                localStorage.setItem(LAST_VISIT_KEY, today);
+                localStorage.setItem(STORAGE_KEY, String(balance));
+            }
+
+            const balanceEl = document.getElementById('balanceValue');
+            const modalBalanceEl = document.getElementById('modalBalance');
+            const balanceCard = document.getElementById('balanceCard');
+            const modal = document.getElementById('balanceModal');
+            const closeBtn = document.getElementById('balanceClose');
+
+            function render() {
+                balanceEl.textContent = balance;
+                modalBalanceEl.textContent = balance;
+            }
+            render();
+
+            balanceCard.addEventListener('click', () => {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+
+            function closeModal() {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            function showToast(text) {
+                const toast = document.createElement('div');
+                toast.className = 'balance-toast';
+                toast.textContent = text;
+                document.body.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.add('show'));
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+            }
+
+            if (earnedToday > 0) {
+                setTimeout(() => showToast('+' + earnedToday + ' 💎 за ежедневный вход'), 2500);
+            }
+        })();
+
         // ═══ КУРСОР-ЦВЕТОК ═══
         const cursor = document.getElementById('cursor');
 
@@ -1080,7 +1489,7 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        document.querySelectorAll('a').forEach(link => {
+        document.querySelectorAll('a, .balance-card').forEach(link => {
             link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
