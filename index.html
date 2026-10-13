@@ -66,7 +66,6 @@
         }
         .toggle-wrap.active .toggle-switch::after { transform: translateX(20px); }
 
-        /* ═══ ПРОФИЛЬ В УГЛУ ═══ */
         .profile-card {
             position: fixed;
             top: 16px; right: 16px;
@@ -198,7 +197,6 @@
             padding: 24px 20px 140px;
         }
 
-        /* ═══ ПРОФИЛЬ ═══ */
         .profile-hero { text-align: center; margin-bottom: 20px; }
         .profile-hero-avatar {
             width: 110px; height: 110px;
@@ -246,7 +244,6 @@
             transition: color 0.4s;
         }
 
-        /* ═══ БЛОК ВЕРИФИКАЦИИ ═══ */
         .verify-block {
             border-radius: 20px;
             padding: 16px 18px;
@@ -336,7 +333,6 @@
         }
         body.tg-dark .verify-phone { color: #81C784; }
 
-        /* ═══ СТАТИСТИКА ═══ */
         .profile-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -435,7 +431,6 @@
             box-shadow: none;
         }
 
-        /* ═══ КАТАЛОГ ═══ */
         .catalog-intro {
             font-size: 13px;
             color: #7E57C2;
@@ -636,7 +631,6 @@
         }
         .sorts-close:hover { background: rgba(156, 39, 176, 0.1); }
 
-        /* ═══ ПЛАВАЮЩАЯ ПАНЕЛЬ ═══ */
         .float-panel {
             position: fixed;
             bottom: 20px;
@@ -696,7 +690,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* ═══ КОРЗИНА ═══ */
         .cart-modal-overlay {
             position: fixed; inset: 0;
             background: rgba(45, 27, 78, 0.6);
@@ -749,9 +742,7 @@
         .cart-item-emoji {
             font-size: 24px; width: 32px;
             text-align: center; flex-shrink: 0;
-            transition: filter 0.3s;
         }
-        .cart-item.warn .cart-item-emoji { filter: grayscale(0.7); }
         .cart-item-info { flex: 1; min-width: 0; }
         .cart-item-name {
             font-size: 13px; font-weight: 700;
@@ -1205,7 +1196,6 @@
             }
         }
 
-        /* ═══ ТЁМНАЯ ТЕМА ═══ */
         body.tg-dark {
             background: linear-gradient(180deg, #1a1420 0%, #0f0a16 100%);
             color: #F5E9FF;
@@ -1466,7 +1456,6 @@
                 <div class="profile-hero-id" id="pageId">ID: —</div>
             </div>
 
-            <!-- Блок верификации -->
             <div id="verifyContainer"></div>
 
             <div class="profile-stats">
@@ -1621,7 +1610,6 @@
             } catch (e) {}
         }
 
-        // ═══ ХРАНИЛИЩЕ ═══
         const storage = {
             get(key) {
                 return new Promise((resolve) => {
@@ -1654,11 +1642,7 @@
             }
         };
 
-        // ═══ ПРОВЕРКА URL ПАРАМЕТРОВ ДЛЯ ВЕРИФИКАЦИИ ═══
         async function checkUrlVerification() {
-            // Поддерживаем 2 формата:
-            // 1) ?verified=1&phone=+375...  (query string)
-            // 2) #verified=1&phone=+375...  (hash)
             let params = new URLSearchParams(window.location.search);
             if (!params.has('verified')) {
                 const hash = window.location.hash.slice(1);
@@ -1669,16 +1653,11 @@
                 const phone = decodeURIComponent(params.get('phone'));
                 await storage.set('verified_phone', phone);
                 await storage.set('is_verified', 'true');
-                // Уведомляем бота
-                if (tg?.sendData) {
-                    try { tg.sendData(JSON.stringify({ verified: true })); } catch (e) {}
-                }
                 return true;
             }
             return false;
         }
 
-        // ═══ ПРОФИЛЬ + ВЕРИФИКАЦИЯ ═══
         (async function () {
             const user = tg?.initDataUnsafe?.user || null;
 
@@ -1715,9 +1694,7 @@
 
             function renderAvatar(container, photoUrl, letter, initialSpan) {
                 if (photoUrl) {
-                    // Прячем span с буквой, добавляем img
                     if (initialSpan) initialSpan.style.display = 'none';
-                    // Убираем старый img если есть
                     const oldImg = container.querySelector('img');
                     if (oldImg) oldImg.remove();
                     const img = document.createElement('img');
@@ -1744,17 +1721,14 @@
             pageUsername.textContent = user?.username ? '@' + user.username : '@—';
             pageId.textContent = user?.id ? 'ID: ' + user.id : 'ID: —';
 
-            // ─── Рендер статуса верификации ───
             async function renderVerifyStatus() {
                 const isVerified = (await storage.get('is_verified')) === 'true';
                 const phone = await storage.get('verified_phone');
 
-                // Обновляем бейджи на аватарках
                 cornerAvatar.classList.toggle('verified', isVerified);
                 pageAvatar.classList.toggle('verified', isVerified);
 
                 if (isVerified && phone) {
-                    // ✅ Верифицирован
                     verifyContainer.innerHTML = `
                         <div class="verify-block verified">
                             <div class="verify-icon"><i class="fas fa-check"></i></div>
@@ -1766,7 +1740,6 @@
                         </div>
                     `;
                 } else {
-                    // ❌ Не верифицирован
                     verifyContainer.innerHTML = `
                         <div class="verify-block unverified">
                             <div class="verify-icon"><i class="fas fa-exclamation"></i></div>
@@ -1783,14 +1756,27 @@
                     const verifyBtn = document.getElementById('verifyBtn');
                     verifyBtn?.addEventListener('click', () => {
                         haptic('medium');
-                        const url = `https://t.me/${BOT_USERNAME}?start=verify`;
-                        if (tg?.openTelegramLink) tg.openTelegramLink(url);
-                        else window.open(url, '_blank');
+                        const botUsername = 'AgromolodostShopBot';
+                        const tgLink = `tg://resolve?domain=${botUsername}&start=verify`;
+                        const webLink = `https://t.me/${botUsername}?start=verify`;
+
+                        try {
+                            if (tg?.openTelegramLink) {
+                                tg.openTelegramLink(webLink);
+                                return;
+                            }
+                        } catch (e) {}
+
+                        try {
+                            window.location.href = tgLink;
+                            return;
+                        } catch (e) {}
+
+                        window.location.href = webLink;
                     });
                 }
             }
 
-            // ─── Баланс и покупки ───
             const DAILY_BONUS = 10;
 
             async function refreshStats(applyDailyBonus) {
@@ -1820,7 +1806,6 @@
                 return earned;
             }
 
-            // ─── Проверка URL параметров ───
             await checkUrlVerification();
             await renderVerifyStatus();
 
@@ -1834,7 +1819,6 @@
                 }
             });
 
-            // ─── Реферал ───
             if (user?.id) {
                 btnReferral.onclick = () => {
                     haptic('medium');
@@ -1931,7 +1915,6 @@
             }
         })();
 
-        // ═══ ЭФФЕКТ ═══
         const effect = {
             active: false,
             raindropTimers: new Set(),
@@ -2041,7 +2024,6 @@
 
         if (effectEnabled) effect.start();
 
-        // ═══ СЕЗОН ═══
         (function () {
             const seasons = {
                 spring: { name: 'Весна', lower: 'весны', emoji: '🌸', next: 'summer' },
@@ -2073,7 +2055,6 @@
             setInterval(update, 60 * 60 * 1000);
         })();
 
-        // ═══ REVEAL ═══
         (function () {
             const els = document.querySelectorAll('.reveal');
             if (!('IntersectionObserver' in window)) {
@@ -2091,7 +2072,6 @@
             els.forEach(el => io.observe(el));
         })();
 
-        // ═══ КАРУСЕЛЬ ═══
         (function () {
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
@@ -2122,7 +2102,6 @@
             }, { passive: true });
         })();
 
-        // ═══ КАЛЕНДАРЬ ЦВЕТЕНИЯ ═══
         (function () {
             const flowers = [
                 { emoji: '🌷', name: 'Тюльпаны',     months: [2, 3],                        label: 'март–апрель' },
@@ -2148,7 +2127,6 @@
             });
         })();
 
-        // ═══ ПРАЗДНИК ═══
         (function () {
             const now = new Date(); const y = now.getFullYear();
             const candidates = [];
@@ -2169,14 +2147,12 @@
             document.querySelector('.holiday-hint').textContent = next.hint;
         })();
 
-        // ═══ СОЦСЕТИ ═══
         (function () {
             document.querySelectorAll('.social-link').forEach(link => {
                 link.addEventListener('click', () => haptic('medium'));
             });
         })();
 
-        // ═══ КАТАЛОГ ═══
         const CATEGORIES = [
             {
                 id: 'tulip',
